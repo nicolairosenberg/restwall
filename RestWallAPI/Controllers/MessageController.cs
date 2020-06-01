@@ -33,23 +33,32 @@ namespace RestWallAPI.Controllers
         {
             // auth user, check if they have access to resource.
 
-            var createdMessage = await _messageService.GetMessageAsync(messageGuid);
-            return Ok(createdMessage);
+            var message = await _messageService.GetMessageAsync(messageGuid);
+            if (message.User.Guid == userGuid)
+            {
+                return Ok(message);
+            }
+            else
+            {
+                return BadRequest();
+            }
+
         }
 
         [HttpPost("{controller}/{userGuid}")]
-        public async Task<IActionResult> CreateMessageAsync(Guid userGuid, [FromBody] Message message)
+        public async Task<IActionResult> CreateMessageAsync(Guid userGuid, Guid boardGuid, [FromBody] Message message)
         {
-            var createdMessage = await _messageService.CreateMessageAsync(userGuid, message);
+            var createdMessage = await _messageService.CreateMessageAsync(userGuid, boardGuid, message);
 
-            if(createdMessage != null)
+            if (createdMessage != null)
             {
                 return Ok(createdMessage);
-            } else
+            }
+            else
             {
                 return BadRequest(createdMessage);
             }
-            
+
         }
 
         [HttpPut("{controller}/{userGuid}")]

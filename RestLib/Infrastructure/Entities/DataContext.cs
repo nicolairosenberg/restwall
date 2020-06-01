@@ -10,8 +10,12 @@ namespace RestLib.Infrastructure.Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Message>();
+            modelBuilder.Entity<Board>();
+            modelBuilder.Entity<User>();
         }
 
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Board> Boards { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -34,6 +34,7 @@ namespace RestWallAPI
             services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databaseName: "MessageBoard"));
 
             services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<IBoardService, BoardService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

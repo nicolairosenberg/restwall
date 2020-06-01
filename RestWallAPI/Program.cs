@@ -22,7 +22,6 @@ namespace RestWallAPI
                 Initialize(services);
             }
 
-            //Continue to run the application
             host.Run();
         }
 
@@ -36,12 +35,39 @@ namespace RestWallAPI
                     return;
                 }
 
-                context.Messages.AddRange(
-                    new Message
-                    {
-                        Id = 1,
-                        Title = "Candy Land"
-                    });
+                context.Boards.Add(new Board() {
+                    Id = 1,
+                    Title = "General Discussion",
+                    Description = "A place to be",
+                });
+
+                context.Boards.Add(new Board()
+                {
+                    Id = 2,
+                    Title = "Introduction",
+                    Description = "Another place to be",
+                });
+
+                context.Boards.Add(new Board()
+                {
+                    Id = 3,
+                    Title = "Reading",
+                    Description = "For every man, woman and child who loves to read",
+                });
+
+                context.Boards.Add(new Board()
+                {
+                    Id = 4,
+                    Title = "Writing",
+                    Description = "For the typing artists.. those who loves a good story",
+                });
+
+                context.Boards.Add(new Board()
+                {
+                    Id = 5,
+                    Title = "Drawing",
+                    Description = "Beauty comes in many shapes.. can you draw it?",
+                });
 
                 context.SaveChanges();
             }

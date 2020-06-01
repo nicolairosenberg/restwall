@@ -7,8 +7,8 @@ namespace RestLib.Infrastructure.Services.Interfaces
 {
     public interface IMessageService
     {
-        Task<Message> CreateMessageAsync(Guid userGuid, Message message);
+        Task<Message> CreateMessageAsync(Guid userGuid, Guid boardGuid, Message message);
         Task<Message> GetMessageAsync(Guid messageGuid);
-        Task<List<Message>> GetMessagesAsync(Guid userGuid);
+        Task<List<Message>> GetMessagesAsync(Guid userGuid, Guid? boardGuid = null);
     }
 }
