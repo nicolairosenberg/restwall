@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RestLib.Infrastructure.Entities;
+using RestLib.Infrastructure.Services;
+using RestLib.Infrastructure.Services.Interfaces;
 
 namespace RestWallAPI
 {
@@ -30,6 +32,8 @@ namespace RestWallAPI
             services.AddControllersWithViews();
 
             services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databaseName: "MessageBoard"));
+
+            services.AddTransient<IMessageService, MessageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

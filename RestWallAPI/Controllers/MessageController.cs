@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RestLib.Infrastructure.Entities;
+using RestLib.Infrastructure.Services.Interfaces;
 
 namespace RestWallAPI.Controllers
 {
@@ -12,43 +13,55 @@ namespace RestWallAPI.Controllers
     public class MessageController : ControllerBase
     {
         private readonly ILogger<MessageController> _logger;
-        private DataContext _context;
+        private readonly IMessageService _messageService;
 
-        public MessageController(ILogger<MessageController> logger, DataContext dataContext)
+        public MessageController(ILogger<MessageController> logger, IMessageService messageService)
         {
             _logger = logger;
-            _context = dataContext;
+            _messageService = messageService;
         }
 
         [HttpGet("messages/{userGuid}")]
-        public async Task<List<Message>> GetMessagesAsync(Guid userGuid)
+        public async Task<IActionResult> GetMessagesAsync(Guid userGuid)
         {
-            return _context.Messages.ToList();
-            //return new List<Message>();
+            var messages = await _messageService.GetMessagesAsync(userGuid);
+            return Ok(messages);
         }
 
         [HttpGet("{controller}/{messageGuid}")]
         public async Task<IActionResult> GetMessageAsync(Guid userGuid, Guid messageGuid)
         {
-            return Ok(new Message());
+            // auth user, check if they have access to resource.
+
+            var createdMessage = await _messageService.GetMessageAsync(messageGuid);
+            return Ok(createdMessage);
         }
 
         [HttpPost("{controller}/{userGuid}")]
         public async Task<IActionResult> CreateMessageAsync(Guid userGuid, [FromBody] Message message)
         {
-            return Ok(message);
+            var createdMessage = await _messageService.CreateMessageAsync(userGuid, message);
+
+            if(createdMessage != null)
+            {
+                return Ok(createdMessage);
+            } else
+            {
+                return BadRequest(createdMessage);
+            }
+            
         }
 
         [HttpPut("{controller}/{userGuid}")]
         public async Task<IActionResult> UpdateMessageAsync(Guid userGuid, [FromBody] Message message)
         {
-            return Ok(message);
+            throw new NotImplementedException();
         }
 
         [HttpDelete("{controller}/{userGuid}")]
         public async Task<IActionResult> DeleteMessageAsync(Guid userGuid, [FromBody] Message message)
         {
-            return Ok(message);
+            throw new NotImplementedException();
         }
     }
 }
