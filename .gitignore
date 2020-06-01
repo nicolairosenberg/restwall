@@ -3,3 +3,12 @@
 ################################################################################
 
 /.vs
+/RestLib/bin/Debug/netstandard2.0
+/RestLib/obj
+/RestTests/bin/Debug/netcoreapp3.1
+/RestTests/obj
+/RestWallAPI/.vs/RestWallAPI
+/RestWallAPI/bin/Debug/netcoreapp3.1
+/RestWallAPI/obj
+/ResWallSite/bin/Debug/netcoreapp3.1
+/ResWallSite/obj
