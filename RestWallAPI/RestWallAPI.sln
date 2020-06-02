@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestTests", "..\RestTests\RestTests.csproj", "{E7D12739-A649-4122-9EB7-3D9BFA5DBE6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestTests", "..\RestTests\RestTests.csproj", "{E7D12739-A649-4122-9EB7-3D9BFA5DBE6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestLib", "..\RestLib\RestLib.csproj", "{8B3568F6-96D4-4F7F-B9A7-BE0D51518997}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestLib", "..\RestLib\RestLib.csproj", "{8B3568F6-96D4-4F7F-B9A7-BE0D51518997}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResWallSite", "..\ResWallSite\ResWallSite.csproj", "{1C16E58A-E4C2-4136-9640-44873E2C5650}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestWallSite", "..\ResWallSite\RestWallSite.csproj", "{1C16E58A-E4C2-4136-9640-44873E2C5650}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestWallAPI", "RestWallAPI.csproj", "{60460755-12B5-47D4-A57A-19FCAD6B0B9F}"
 EndProject
