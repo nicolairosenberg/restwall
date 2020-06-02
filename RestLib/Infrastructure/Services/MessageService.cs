@@ -37,6 +37,7 @@ namespace RestLib.Infrastructure.Services
             if (boardGuid == null)
             {
                 var user = await _dataContext.Users.Where(x => x.Guid == userGuid).SingleOrDefaultAsync();
+
                 return await _dataContext.Messages.Where(x => x.UserId == user.Id).ToListAsync();
 
             }

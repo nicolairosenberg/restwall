@@ -22,9 +22,9 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpGet("messages/{userGuid}")]
-        public async Task<IActionResult> GetMessagesAsync(Guid userGuid)
+        public async Task<IActionResult> GetMessagesAsync(Guid userGuid, Guid? boardGuid = null)
         {
-            var messages = await _messageService.GetMessagesAsync(userGuid);
+            var messages = await _messageService.GetMessagesAsync(userGuid, boardGuid);
             return Ok(messages);
         }
 
