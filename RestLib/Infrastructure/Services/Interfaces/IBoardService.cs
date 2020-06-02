@@ -8,6 +8,6 @@ namespace RestLib.Infrastructure.Services.Interfaces
     public interface IBoardService
     {
         Task<Board> GetBoardAsync(Guid boardGuid);
-        Task<List<Board>> GetBoardsAsync();
+        Task<ICollection<Board>> GetBoardsAsync();
     }
 }

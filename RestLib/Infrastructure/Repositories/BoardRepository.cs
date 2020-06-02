@@ -3,6 +3,7 @@ using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestLib.Infrastructure.Repositories
@@ -16,14 +17,10 @@ namespace RestLib.Infrastructure.Repositories
             _dataContext = dataContext;
         }
 
-        public Task CreateBoardAsync()
+        public Task<Board> GetBoardAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task GetBoardAsync()
-        {
-            throw new NotImplementedException();
+            var board = _dataContext.Boards.Include(x => x.Topics).SingleOrDefaultAsync();
+            return board;
         }
 
         public async Task<ICollection<Board>> GetBoardsAsync()
@@ -32,19 +29,9 @@ namespace RestLib.Infrastructure.Repositories
             return boards;
         }
 
-        public Task UpdateBoardAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteBoardAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Dispose()
         {
-            throw new NotImplementedException();
+            //this.Dispose();
         }
     }
 }

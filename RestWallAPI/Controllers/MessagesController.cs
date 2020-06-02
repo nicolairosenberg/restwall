@@ -10,12 +10,12 @@ using RestLib.Infrastructure.Services.Interfaces;
 namespace RestWallAPI.Controllers
 {
     [ApiController]
-    public class MessageController : ControllerBase
+    public class MessagesController : ControllerBase
     {
-        private readonly ILogger<MessageController> _logger;
+        private readonly ILogger<MessagesController> _logger;
         private readonly IMessageService _messageService;
 
-        public MessageController(ILogger<MessageController> logger, IMessageService messageService)
+        public MessagesController(ILogger<MessagesController> logger, IMessageService messageService)
         {
             _logger = logger;
             _messageService = messageService;
@@ -34,7 +34,7 @@ namespace RestWallAPI.Controllers
             // auth user, check if they have access to resource.
 
             var message = await _messageService.GetMessageAsync(messageGuid);
-            if (message.User.Guid == userGuid)
+            if (message.User.Id == userGuid)
             {
                 return Ok(message);
             }
@@ -45,6 +45,7 @@ namespace RestWallAPI.Controllers
 
         }
 
+        // HUSK RETURN 201 NÅR CREATED
         [HttpPost("{controller}/{userGuid}/{boardGuid}")]
         public async Task<IActionResult> CreateMessageAsync(Guid userGuid, Guid boardGuid, [FromBody] Message message)
         {
@@ -52,7 +53,7 @@ namespace RestWallAPI.Controllers
 
             if (createdMessage != null)
             {
-                return Ok(createdMessage);
+                return Created("", createdMessage);
             }
             else
             {

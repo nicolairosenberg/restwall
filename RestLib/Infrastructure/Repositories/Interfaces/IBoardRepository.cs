@@ -1,4 +1,5 @@
 ﻿using RestLib.Infrastructure.Entities;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,10 +7,7 @@ namespace RestLib.Infrastructure.Repositories.Interfaces
 {
     public interface IBoardRepository
     {
-        Task CreateBoardAsync();
-        Task GetBoardAsync();
+        Task<Board> GetBoardAsync(Guid id);
         Task<ICollection<Board>> GetBoardsAsync();
-        Task UpdateBoardAsync();
-        Task DeleteBoardAsync();
     }
 }

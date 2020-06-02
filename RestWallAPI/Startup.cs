@@ -11,7 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using RestLib.Infrastructure.Entities;
+using RestLib.Infrastructure.Repositories;
+using RestLib.Infrastructure.Repositories.Interfaces;
 using RestLib.Infrastructure.Services;
 using RestLib.Infrastructure.Services.Interfaces;
 
@@ -35,6 +38,10 @@ namespace RestWallAPI
 
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IBoardService, BoardService>();
+            services.AddTransient<IBoardRepository, BoardRepository>();
+
+            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

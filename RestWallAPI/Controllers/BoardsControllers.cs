@@ -6,19 +6,19 @@ using RestLib.Infrastructure.Services.Interfaces;
 namespace RestWallAPI.Controllers
 {
     [ApiController]
-    public class BoardController : ControllerBase
+    public class BoardsControllers : ControllerBase
     {
         private readonly IBoardService _boardService;
-        public BoardController(IBoardService boardService)
+        public BoardsControllers(IBoardService boardService)
         {
             _boardService = boardService;
         }
 
-        [HttpGet("{controller}")]
+        [HttpGet("{controller}s")]
         public async Task<IActionResult> GetBoardsAsync()
         {
             var boards = await _boardService.GetBoardsAsync();
-            return Ok(boards);
+            return new JsonResult(boards);
         }
 
         [HttpGet("{controller}/{boardGuid}")]

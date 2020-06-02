@@ -1,6 +1,3 @@
-using Microsoft.Extensions.Logging;
-using RestWallAPI.Controllers;
-using System;
 using Xunit;
 
 namespace RestTests.IntegrationTests
