@@ -21,7 +21,7 @@ namespace RestWallAPI.Controllers
             _messageService = messageService;
         }
 
-        [HttpGet("messages/{userGuid}")]
+        [HttpGet("messages/{userGuid}/{boardGuid}")]
         public async Task<IActionResult> GetMessagesAsync(Guid userGuid, Guid? boardGuid = null)
         {
             var messages = await _messageService.GetMessagesAsync(userGuid, boardGuid);
@@ -45,7 +45,7 @@ namespace RestWallAPI.Controllers
 
         }
 
-        [HttpPost("{controller}/{userGuid}")]
+        [HttpPost("{controller}/{userGuid}/{boardGuid}")]
         public async Task<IActionResult> CreateMessageAsync(Guid userGuid, Guid boardGuid, [FromBody] Message message)
         {
             var createdMessage = await _messageService.CreateMessageAsync(userGuid, boardGuid, message);

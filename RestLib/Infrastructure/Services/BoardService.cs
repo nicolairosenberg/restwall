@@ -17,9 +17,9 @@ namespace RestLib.Infrastructure.Services
             _dataContext = dataContext;
         }
 
-        public async Task<Board> GetBoardAsync(Guid boardGuid)
+        public async Task<Board> GetBoardAsync(Guid id)
         {
-            return await _dataContext.Boards.Where(x => x.Guid == boardGuid).SingleOrDefaultAsync();
+            return await _dataContext.Boards.Where(x => x.Id == id).SingleOrDefaultAsync();
         }
 
         public async Task<List<Board>> GetBoardsAsync()
