@@ -1,6 +1,9 @@
-﻿using RestLib.Infrastructure.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestLib.Infrastructure.Repositories
@@ -14,33 +17,44 @@ namespace RestLib.Infrastructure.Repositories
             _dataContext = dataContext;
         }
 
-        public Task CreateMessageAsync()
+        public async Task<Message> CreateMessageAsync(Message message)
         {
-            throw new NotImplementedException();
+            await _dataContext.Messages.AddAsync(message);
+            return message;
         }
 
-        public Task GetMessageAsync()
+        public async Task<Message> GetMessageAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _dataContext.Messages.Where(x => x.Id == id).SingleOrDefaultAsync();
         }
 
-        public Task GetMessagesAsync()
+        public async Task<ICollection<Message>> GetMessagesAsync(Guid topicId)
         {
-            throw new NotImplementedException();
+            return await _dataContext.Messages.ToListAsync();
         }
 
-        public Task UpdateMessageAsync()
+        public async Task<Message> UpdateMessageAsync(Message message)
         {
-            throw new NotImplementedException();
+            var oldMessage = await _dataContext.Messages.Where(x => x.Id == message.Id).SingleOrDefaultAsync();
+            oldMessage.Text = message.Text;
+            oldMessage.Title = message.Title;
+            oldMessage.UpdatedOn = DateTime.Now;
+
+            await _dataContext.SaveChangesAsync();
+
+            return oldMessage;
         }
-        public Task DeleteMessageAsync()
+
+        public async Task DeleteMessageAsync(Message message)
         {
-            throw new NotImplementedException();
+            //var message = await _dataContext.Messages.Where(x => x.Id == id).SingleOrDefaultAsync();
+            _dataContext.Messages.Remove(message);
+            await _dataContext.SaveChangesAsync();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

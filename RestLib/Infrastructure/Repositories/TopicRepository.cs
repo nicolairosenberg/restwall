@@ -1,6 +1,9 @@
-﻿using RestLib.Infrastructure.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestLib.Infrastructure.Repositories
@@ -14,31 +17,37 @@ namespace RestLib.Infrastructure.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task<Topic> CreateTopicAsync(Guid userId, Topic topic)
+        public async Task<Topic> CreateTopicAsync(Topic topic)
         {
-            topic.UserId = userId;
             await _dataContext.AddAsync(topic);
             return topic;
         }
 
-        public Task GetTopicAsync()
+        public async Task<Topic> GetTopicAsync(Guid topicId)
         {
-            throw new NotImplementedException();
+            return await _dataContext.Topics.Where(x => x.Id == topicId).SingleOrDefaultAsync();
         }
 
-        public Task GetTopicsAsync()
+        public async Task<ICollection<Topic>> GetTopicsAsync(Guid boardId)
         {
-            throw new NotImplementedException();
+            return await _dataContext.Topics.Where(x => x.BoardId == boardId).ToListAsync();
         }
 
-        public Task UpdateTopicAsync()
+        public async Task<Topic> UpdateTopicAsync(Topic topic)
         {
-            throw new NotImplementedException();
+            var oldTopic = await _dataContext.Topics.Where(x => x.Id == topic.Id).SingleOrDefaultAsync();
+            oldTopic.Title = topic.Title;
+            oldTopic.Text = topic.Text;
+            oldTopic.UpdatedOn = DateTime.Now;
+            //_dataContext.Update(topic);
+            await _dataContext.SaveChangesAsync();
+            return oldTopic;
         }
 
-        public Task DeleteTopicAsync()
+        public async Task DeleteTopicAsync(Topic topic)
         {
-            throw new NotImplementedException();
+            _dataContext.Remove(topic);
+            await _dataContext.SaveChangesAsync();
         }
 
         public void Dispose()

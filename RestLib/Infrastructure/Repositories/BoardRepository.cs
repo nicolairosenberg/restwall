@@ -19,7 +19,7 @@ namespace RestLib.Infrastructure.Repositories
 
         public Task<Board> GetBoardAsync(Guid id)
         {
-            var board = _dataContext.Boards.Include(x => x.Topics).SingleOrDefaultAsync();
+            var board = _dataContext.Boards.Where(x => x.Id == id).SingleOrDefaultAsync();
             return board;
         }
 
@@ -31,7 +31,7 @@ namespace RestLib.Infrastructure.Repositories
 
         public void Dispose()
         {
-            //this.Dispose();
+
         }
     }
 }
