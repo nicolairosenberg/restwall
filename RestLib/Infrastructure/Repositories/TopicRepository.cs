@@ -20,6 +20,7 @@ namespace RestLib.Infrastructure.Repositories
         public async Task<Topic> CreateTopicAsync(Topic topic)
         {
             await _dataContext.AddAsync(topic);
+            await _dataContext.SaveChangesAsync();
             return topic;
         }
 
