@@ -59,14 +59,27 @@ namespace RestLib.Infrastructure.Services
             return topicsDto;
         }
 
-        public Task<ResponseTopicDto> UpdateTopicAsync(Guid boardId, ResponseTopicDto topic)
+        public async Task<ResponseTopicDto> UpdateTopicAsync(Guid boardId, Guid topicId, UpdateTopicDto topic)
+        {
+            var existingTopic = await _topicRepository.GetTopicAsync(topicId);
+
+            var updatedEntity = _mapper.Map(topic, existingTopic);
+
+            var returnedEntity = await _topicRepository.UpdateTopicAsync(updatedEntity);
+
+            var responseDto = _mapper.Map<Topic, ResponseTopicDto>(returnedEntity);
+
+            return responseDto;
+        }
+
+        public async Task<ResponseTopicDto> DeleteTopicAsync(Guid boardId, ResponseTopicDto topic)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ResponseTopicDto> DeleteTopicAsync(Guid boardId, ResponseTopicDto topic)
+        public async Task<bool> TopicExistsAsync(Guid topicId)
         {
-            throw new NotImplementedException();
+            return await _topicRepository.ExistsAsync(topicId);
         }
     }
 }

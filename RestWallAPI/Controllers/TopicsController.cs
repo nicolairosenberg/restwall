@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Models.V1;
 using RestLib.Infrastructure.Services.Interfaces;
@@ -52,9 +53,16 @@ namespace RestWallAPI.Controllers
 
 
         [HttpPut("{topicId}")]
-        public async Task<ActionResult<ResponseTopicDto>> UpdateTopicAsync(Guid boardId, Guid topicId, [FromBody] ResponseTopicDto topic)
+        public async Task<ActionResult<ResponseTopicDto>> UpdateTopicAsync(Guid boardId, Guid topicId, [FromBody] UpdateTopicDto topic)
         {
-            return null;
+            if (! await _topicService.TopicExistsAsync(topicId))
+            {
+                return NotFound();
+            }
+
+            var updatedDto = await _topicService.UpdateTopicAsync(boardId, topicId, topic);
+
+            return Ok(updatedDto);
         }
 
         [HttpDelete("{topicId}")]

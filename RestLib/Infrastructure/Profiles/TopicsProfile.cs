@@ -14,7 +14,9 @@ namespace RestLib.Infrastructure.Profiles
                 opt => opt.MapFrom(src => src.UpdatedOn == DateTime.MinValue || src.UpdatedOn == null? src.CreatedOn : src.UpdatedOn));
 
             CreateMap<RequestTopicDto, Topic>()
-                .ForMember(dest => dest.Messages, opt => opt.MapFrom(src => src.Messages)).ReverseMap();
+                .ForMember(dest => dest.Messages, opt => opt.MapFrom(src => src.Messages));//.ReverseMap();
+
+            CreateMap<UpdateTopicDto, Topic>();
         }
     }
 }

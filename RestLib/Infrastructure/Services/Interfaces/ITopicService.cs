@@ -10,7 +10,8 @@ namespace RestLib.Infrastructure.Services.Interfaces
         Task<IEnumerable<ResponseTopicDto>> GetTopicsAsync(Guid boardId);
         Task<ResponseTopicDto> GetTopicAsync(Guid boardId, Guid topicId);
         Task<ResponseTopicDto> CreateTopicAsync(Guid boardId, RequestTopicDto topic);
-        Task<ResponseTopicDto> UpdateTopicAsync(Guid boardId, ResponseTopicDto topic);
+        Task<ResponseTopicDto> UpdateTopicAsync(Guid boardId, Guid topicId, UpdateTopicDto topic);
         Task<ResponseTopicDto> DeleteTopicAsync(Guid boardId, ResponseTopicDto topic);
+        Task<bool> TopicExistsAsync(Guid topicId);
     }
 }

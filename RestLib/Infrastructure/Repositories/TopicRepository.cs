@@ -36,13 +36,12 @@ namespace RestLib.Infrastructure.Repositories
 
         public async Task<Topic> UpdateTopicAsync(Topic topic)
         {
-            var oldTopic = await _dataContext.Topics.Where(x => x.Id == topic.Id).SingleOrDefaultAsync();
-            oldTopic.Title = topic.Title;
-            oldTopic.Text = topic.Text;
-            oldTopic.UpdatedOn = DateTime.Now;
-            //_dataContext.Update(topic);
+            topic.Title = topic.Title;
+            topic.Text = topic.Text;
+            topic.UpdatedOn = DateTime.Now;
+            _dataContext.Update(topic);
             await _dataContext.SaveChangesAsync();
-            return oldTopic;
+            return topic;
         }
 
         public async Task DeleteTopicAsync(Topic topic)
