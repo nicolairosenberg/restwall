@@ -29,7 +29,7 @@ namespace RestLib.Infrastructure.Repositories
             return await _dataContext.Topics.Where(x => x.Id == topicId).SingleOrDefaultAsync();
         }
 
-        public async Task<ICollection<Topic>> GetTopicsAsync(Guid boardId)
+        public async Task<IEnumerable<Topic>> GetTopicsAsync(Guid boardId)
         {
             return await _dataContext.Topics.Where(x => x.BoardId == boardId).ToListAsync();
         }
@@ -51,9 +51,13 @@ namespace RestLib.Infrastructure.Repositories
             await _dataContext.SaveChangesAsync();
         }
 
+        public async Task<bool> ExistsAsync(Guid topicId)
+        {
+            return await _dataContext.Topics.Where(x => x.Id == topicId).AnyAsync();
+        }
+
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
     }
 }

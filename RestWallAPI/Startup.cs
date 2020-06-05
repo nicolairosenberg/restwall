@@ -1,6 +1,8 @@
 using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,33 +25,45 @@ namespace RestWallAPI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews(options => {
+            services.AddControllersWithViews(options =>
+            {
 
                 options.ReturnHttpNotAcceptable = true;
 
             }).AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
             .AddXmlDataContractSerializerFormatters();
 
-            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databaseName: "MessageBoard"));
 
-            services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IBoardService, BoardService>();
-            services.AddTransient<IBoardRepository, BoardRepository>();
+            services.AddTransient<ITopicService, TopicService>();
 
-            
+            services.AddTransient<IBoardRepository, BoardRepository>();
+            services.AddTransient<ITopicRepository, TopicRepository>();
+
+
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler(appBuilder =>
+                appBuilder.Run(async context =>
+                {
+                    context.Response.StatusCode = 500;
+                    await context.Response.WriteAsync("An unexpected exception happened. Contact us at RestWall if this issue continues.");
+                    // TODO: [NR] possible to log here
+                }
+                ));
             }
 
             app.UseHttpsRedirection();

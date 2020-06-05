@@ -17,16 +17,21 @@ namespace RestLib.Infrastructure.Repositories
             _dataContext = dataContext;
         }
 
-        public Task<Board> GetBoardAsync(Guid id)
+        public async Task<Board> GetBoardAsync(Guid boardId)
         {
-            var board = _dataContext.Boards.Where(x => x.Id == id).SingleOrDefaultAsync();
+            var board = await _dataContext.Boards.Where(x => x.Id == boardId).SingleOrDefaultAsync();
             return board;
         }
 
-        public async Task<ICollection<Board>> GetBoardsAsync()
+        public async Task<IEnumerable<Board>> GetBoardsAsync()
         {
             var boards = await _dataContext.Boards.ToListAsync();
             return boards;
+        }
+
+        public async Task<bool> ExistsAsync(Guid boardId)
+        {
+            return await _dataContext.Boards.Where(x => x.Id == boardId).AnyAsync();
         }
 
         public void Dispose()

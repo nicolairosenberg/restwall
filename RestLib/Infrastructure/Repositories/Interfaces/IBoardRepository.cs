@@ -7,7 +7,8 @@ namespace RestLib.Infrastructure.Repositories.Interfaces
 {
     public interface IBoardRepository
     {
-        Task<Board> GetBoardAsync(Guid id);
-        Task<ICollection<Board>> GetBoardsAsync();
+        Task<Board> GetBoardAsync(Guid boardId);
+        Task<IEnumerable<Board>> GetBoardsAsync();
+        Task<bool> ExistsAsync(Guid boardId);
     }
 }

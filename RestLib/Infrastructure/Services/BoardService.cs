@@ -1,34 +1,50 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RestLib.Infrastructure.Entities;
+﻿using AutoMapper;
+using RestLib.Infrastructure.Models.V1;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using RestLib.Infrastructure.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestLib.Infrastructure.Services
 {
     public class BoardService : IBoardService
     {
-        private readonly DataContext _dataContext;
         private readonly IBoardRepository _boardRepository;
+        private readonly IMapper _mapper;
 
-        public BoardService(DataContext dataContext, IBoardRepository boardRepository)
+        public BoardService(IBoardRepository boardRepository, IMapper mapper)
         {
-            _dataContext = dataContext;
             _boardRepository = boardRepository;
+            _mapper = mapper;
         }
 
-        public async Task<Board> GetBoardAsync(Guid id)
+        public async Task<ResponseBoardDto> GetBoardAsync(Guid boardId)
         {
-            return await _boardRepository.GetBoardAsync(id);
-            //return await _dataContext.Boards.Where(x => x.Id == id).SingleOrDefaultAsync();
+            var board = await _boardRepository.GetBoardAsync(boardId);
+
+            if(board == null)
+            {
+                return null;
+            }
+
+            var responseBoard = _mapper.Map<ResponseBoardDto>(board);
+
+            return responseBoard;
         }
 
-        public async Task<ICollection<Board>> GetBoardsAsync()
+        public async Task<IEnumerable<ResponseBoardDto>> GetBoardsAsync()
         {
-            return await _boardRepository.GetBoardsAsync();
+            var boards = await _boardRepository.GetBoardsAsync();
+
+            if(boards == null)
+            {
+                return null;
+            }
+
+            var responseBoards = _mapper.Map<IEnumerable<ResponseBoardDto>>(boards);
+
+            return responseBoards;
         }
     }
 }
