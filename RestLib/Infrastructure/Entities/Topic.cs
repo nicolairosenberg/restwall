@@ -15,7 +15,7 @@ namespace RestLib.Infrastructure.Entities
         public Guid BoardId { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
-        public List<Message> Messages { get; set; } = new List<Message>();
+        public ICollection<Message> Messages { get; set; } = new List<Message>();
 
         [ForeignKey("UserId")]
         public Guid UserId { get; set; }

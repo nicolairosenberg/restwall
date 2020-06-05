@@ -25,6 +25,13 @@ namespace RestLib.Infrastructure.Services
             var topicEntity = _mapper.Map<Topic>(topic);
             topicEntity.Id = Guid.NewGuid();
             topicEntity.BoardId = boardId;
+
+            foreach (var item in topicEntity.Messages)
+            {
+                item.Id = Guid.NewGuid();
+                item.TopicId = topicEntity.Id;
+            }
+
             var createdEntity = await _topicRepository.CreateTopicAsync(topicEntity);
             var responseDto = _mapper.Map<ResponseTopicDto>(createdEntity);
 
@@ -35,7 +42,7 @@ namespace RestLib.Infrastructure.Services
         {
             var topic = await _topicRepository.GetTopicAsync(topicId);
 
-            if(topic == null)
+            if (topic == null)
             {
                 return null;
             }
