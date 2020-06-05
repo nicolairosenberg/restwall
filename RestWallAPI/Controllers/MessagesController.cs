@@ -10,7 +10,7 @@ using RestLib.Infrastructure.Services.Interfaces;
 namespace RestWallAPI.Controllers
 {
     [ApiController]
-    [Route("boards/{boardId}/topics/{topicId}")]
+    [Route("boards/{boardId}/topics/{topicId}/messages")]
     public class MessagesController : ControllerBase
     {
         private readonly ILogger<MessagesController> _logger;
@@ -52,57 +52,11 @@ namespace RestWallAPI.Controllers
             return null;
         }
 
-        //[HttpGet("messages/{userGuid}/{boardGuid}")]
-        //public async Task<IActionResult> GetMessagesAsync(Guid userGuid, Guid? boardGuid = null)
-        //{
-        //    var messages = await _messageService.GetMessagesAsync(userGuid, boardGuid);
-        //    return Ok(messages);
-        //}
-
-        //[HttpGet("{controller}/{messageGuid}")]
-        //public async Task<IActionResult> GetMessageAsync(Guid userGuid, Guid messageGuid)
-        //{
-        //    // auth user, check if they have access to resource.
-
-        //    var message = await _messageService.GetMessageAsync(messageGuid);
-        //    if (message.User.Id == userGuid)
-        //    {
-        //        return Ok(message);
-        //    }
-        //    else
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //}
-
-        //// HUSK RETURN 201 NÅR CREATED
-        //[HttpPost("{controller}/{userGuid}/{boardGuid}")]
-        //public async Task<IActionResult> CreateMessageAsync(Guid userGuid, Guid boardGuid, [FromBody] Message message)
-        //{
-        //    var createdMessage = await _messageService.CreateMessageAsync(userGuid, boardGuid, message);
-
-        //    if (createdMessage != null)
-        //    {
-        //        return Created("", createdMessage);
-        //    }
-        //    else
-        //    {
-        //        return BadRequest(createdMessage);
-        //    }
-
-        //}
-
-        //[HttpPut("{controller}/{userGuid}")]
-        //public async Task<IActionResult> UpdateMessageAsync(Guid userGuid, [FromBody] Message message)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //[HttpDelete("{controller}/{userGuid}")]
-        //public async Task<IActionResult> DeleteMessageAsync(Guid userGuid, [FromBody] Message message)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [HttpOptions]
+        public IActionResult GetTopicOptions()
+        {
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST, PUT, DELETE");
+            return Ok();
+        }
     }
 }

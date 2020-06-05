@@ -62,5 +62,12 @@ namespace RestWallAPI.Controllers
         {
             return null;
         }
+
+        [HttpOptions]
+        public IActionResult GetTopicOptions()
+        {
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST, PUT, DELETE");
+            return Ok();
+        }
     }
 }

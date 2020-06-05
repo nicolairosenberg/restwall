@@ -30,6 +30,7 @@ namespace RestLib.Infrastructure.Services
             {
                 item.Id = Guid.NewGuid();
                 item.TopicId = topicEntity.Id;
+                item.UserId = topicEntity.UserId;
             }
 
             var createdEntity = await _topicRepository.CreateTopicAsync(topicEntity);
