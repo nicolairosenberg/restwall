@@ -18,32 +18,33 @@ namespace RestWallAPI.Controllers
     public class TopicsController : ControllerBase
     {
         private readonly ITopicService _topicService;
-
-        public TopicsController(ITopicService topicService)
+        private readonly IMapper _mapper;
+        public TopicsController(ITopicService topicService, IMapper mapper)
         {
             _topicService = topicService;
+            _mapper = mapper;
         }
 
         [HttpGet(Name = "GetTopicsAsync")]
         [HttpHead]
         public async Task<ActionResult<IEnumerable<ResponseTopicDto>>> GetTopicsAsync(Guid boardId, [FromQuery] TopicsParams topicsParams)
         {
-            var responseDtos = await _topicService.GetTopicsAsync(boardId, topicsParams);
+            PagedList<Topic> topics = await _topicService.GetTopicsAsync(boardId, topicsParams);
 
-            if (responseDtos == null)
+            if (topics == null)
             {
                 return NotFound();
             }
 
-            var previousPageLink = responseDtos.HasPrevious ? CreateTopicResourceUri(topicsParams, UriTypeEnum.PreviousPage) : null;
-            var nextPageLink = responseDtos.HasNext ? CreateTopicResourceUri(topicsParams, UriTypeEnum.NextPage) : null;
+            var previousPageLink = topics.HasPrevious ? CreateTopicResourceUri(topicsParams, UriTypeEnum.PreviousPage) : null;
+            var nextPageLink = topics.HasNext ? CreateTopicResourceUri(topicsParams, UriTypeEnum.NextPage) : null;
 
             var paginationMetaData = new
             {
-                totalCount = responseDtos.TotalCount,
-                pageSize = responseDtos.PageSize,
-                currentPage = responseDtos.CurrentPage,
-                totalPages = responseDtos.TotalPages,
+                totalCount = topics.TotalCount,
+                pageSize = topics.PageSize,
+                currentPage = topics.CurrentPage,
+                totalPages = topics.TotalPages,
                 previousPageLink,
                 nextPageLink
             };
@@ -52,7 +53,8 @@ namespace RestWallAPI.Controllers
 
             Response.Headers.Add("X-Pagination", paginationMetaDataJson);
 
-            var responseDtos = _mapp
+            var responseDtos = _mapper.Map<IEnumerable<ResponseTopicDto>>(topics);
+            //var responseDtos = _mapp
 
             return Ok(responseDtos);
         }

@@ -36,13 +36,13 @@ namespace RestLib.Infrastructure.Repositories
         //    return await _dataContext.Topics.Where(x => x.BoardId == boardId).ToListAsync();
         //}
 
-        public async Task<PagedList<Topic>> GetTopicsAsync(Guid boardId, TopicsParams topicsParams)
+        public async Task<IQueryable<Topic>> GetTopicsAsync(Guid boardId)
         {
-            var collection = _dataContext.Topics as IQueryable<Topic>;
+            return _dataContext.Topics as IQueryable<Topic>;
 
             //return await _dataContext.Topics.Where(x => x.BoardId == boardId).ToListAsync();
 
-            return PagedList<Topic>.Create(collection, topicsParams.PageNumber, topicsParams.PageSize);
+            ////return PagedList<Topic>.Create(collection, topicsParams.PageNumber, topicsParams.PageSize);
         }
 
         public async Task<Topic> UpdateTopicAsync(Topic topic)

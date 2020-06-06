@@ -19,7 +19,7 @@ namespace RestLib.Infrastructure.Profiles
 
             CreateMap<UpdateTopicDto, Topic>();
 
-            CreateMap<PagedList<Topic>, PagedList<ResponseTopicDto>>();
+            //CreateMap<PagedList<Topic>, PagedList<ResponseTopicDto>>();
         }
     }
 }
