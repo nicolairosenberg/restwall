@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RestLib.Infrastructure.Helpers
@@ -22,9 +23,11 @@ namespace RestLib.Infrastructure.Helpers
             AddRange(items);
         }
 
-        public static PagedList<T> Create()
+        public static PagedList<T> Create(IQueryable<T> source, int pageNumber, int pageSize)
         {
-            return null;
+            var count = source.Count();
+            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            return new PagedList<T>(items, count, pageNumber, pageSize);
         }
     }
 }
