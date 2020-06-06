@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Models.V1;
+using RestLib.Infrastructure.Parameters;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using RestLib.Infrastructure.Services.Interfaces;
 using System;
@@ -52,9 +53,16 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<IEnumerable<ResponseTopicDto>> GetTopicsAsync(Guid boardId)
+        //public async Task<IEnumerable<ResponseTopicDto>> GetTopicsAsync(Guid boardId)
+        //{
+        //    var topics = await _topicRepository.GetTopicsAsync(boardId);
+        //    var topicsDto = _mapper.Map<IEnumerable<ResponseTopicDto>>(topics);
+        //    return topicsDto;
+        //}
+
+        public async Task<IEnumerable<ResponseTopicDto>> GetTopicsAsync(Guid boardId, TopicsParams topicsParams)
         {
-            var topics = await _topicRepository.GetTopicsAsync(boardId);
+            var topics = await _topicRepository.GetTopicsAsync(boardId, topicsParams);
             var topicsDto = _mapper.Map<IEnumerable<ResponseTopicDto>>(topics);
             return topicsDto;
         }
@@ -74,7 +82,13 @@ namespace RestLib.Infrastructure.Services
 
         public async Task<ResponseTopicDto> DeleteTopicAsync(Guid boardId, ResponseTopicDto topic)
         {
-            throw new NotImplementedException();
+            var existingTopic = await _topicRepository.GetTopicAsync(topic.Id);
+
+            var returnedEntity = await _topicRepository.DeleteTopicAsync(existingTopic);
+
+            var responseDto = _mapper.Map<Topic, ResponseTopicDto>(returnedEntity);
+
+            return responseDto;
         }
 
         public async Task<bool> TopicExistsAsync(Guid topicId)

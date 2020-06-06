@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Models.V1;
+using RestLib.Infrastructure.Parameters;
 using RestLib.Infrastructure.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,9 +24,13 @@ namespace RestWallAPI.Controllers
 
         [HttpGet]
         [HttpHead]
-        public async Task<ActionResult<IEnumerable<ResponseTopicDto>>> GetTopicsAsync(Guid boardId)
+        public async Task<ActionResult<IEnumerable<ResponseTopicDto>>> GetTopicsAsync(Guid boardId, [FromQuery] TopicsParams topicsParams)
         {
-            var responseDtos = await _topicService.GetTopicsAsync(boardId);
+            if(topicsParams == null)
+            {
+                topicsParams = new TopicsParams();
+            }
+            var responseDtos = await _topicService.GetTopicsAsync(boardId, topicsParams);
             
             if(responseDtos == null)
             {
@@ -66,9 +71,21 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpDelete("{topicId}")]
-        public async Task<ActionResult<ResponseTopicDto>> DeleteTopicAsync(Guid boardId, Guid topicId, [FromBody] ResponseTopicDto topic)
+        public async Task<ActionResult<ResponseTopicDto>> DeleteTopicAsync(Guid boardId, Guid topicId)
         {
-            return null;
+            if (!await _topicService.TopicExistsAsync(topicId))
+            {
+                return NotFound();
+            }
+
+            var topic = await _topicService.GetTopicAsync(boardId, topicId);
+
+            if(topic == null)
+            {
+                return NoContent();
+            }
+
+            return await _topicService.DeleteTopicAsync(boardId, topic);
         }
 
         [HttpOptions]

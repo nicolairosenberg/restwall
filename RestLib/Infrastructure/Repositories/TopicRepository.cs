@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestLib.Infrastructure.Entities;
+using RestLib.Infrastructure.Parameters;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -29,9 +30,21 @@ namespace RestLib.Infrastructure.Repositories
             return await _dataContext.Topics.Where(x => x.Id == topicId).SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Topic>> GetTopicsAsync(Guid boardId)
+        //public async Task<IEnumerable<Topic>> GetTopicsAsync(Guid boardId)
+        //{
+        //    return await _dataContext.Topics.Where(x => x.BoardId == boardId).ToListAsync();
+        //}
+
+        public async Task<IEnumerable<Topic>> GetTopicsAsync(Guid boardId, TopicsParams topicsParams)
         {
-            return await _dataContext.Topics.Where(x => x.BoardId == boardId).ToListAsync();
+            var collection = _dataContext.Topics as IQueryable<Topic>;
+
+            //return await _dataContext.Topics.Where(x => x.BoardId == boardId).ToListAsync();
+
+            return await collection
+                .Skip(topicsParams.PageSize * (topicsParams.PageNumber - 1))
+                .Take(topicsParams.PageSize)
+                .ToListAsync();
         }
 
         public async Task<Topic> UpdateTopicAsync(Topic topic)
@@ -44,10 +57,12 @@ namespace RestLib.Infrastructure.Repositories
             return topic;
         }
 
-        public async Task DeleteTopicAsync(Topic topic)
+        public async Task<Topic> DeleteTopicAsync(Topic topic)
         {
             _dataContext.Remove(topic);
             await _dataContext.SaveChangesAsync();
+
+            return topic;
         }
 
         public async Task<bool> ExistsAsync(Guid topicId)
