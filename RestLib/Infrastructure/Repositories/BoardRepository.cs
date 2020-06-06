@@ -2,7 +2,6 @@
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,10 +22,10 @@ namespace RestLib.Infrastructure.Repositories
             return board;
         }
 
-        public async Task<IEnumerable<Board>> GetBoardsAsync()
+        public async Task<IQueryable<Board>> GetBoardsAsync()
         {
-            var boards = await _dataContext.Boards.ToListAsync();
-            return boards;
+            // NR: async?...hmm I have to figure out a way to keep this async..
+            return _dataContext.Boards as IQueryable<Board>;
         }
 
         public async Task<bool> ExistsAsync(Guid boardId)

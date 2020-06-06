@@ -22,16 +22,18 @@ namespace RestWallAPI.Controllers
             _messageService = messageService;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetMessagesAsync")]
         public async Task<IActionResult> GetMessagesAsync(Guid boardId, Guid topicId)
         {
             return null;
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreateMessageAsync")]
         public async Task<IActionResult> CreateMessageAsync(Guid boardId, Guid topicId, [FromBody] Message message)
         {
             return null;
+
+            // createdAtRoute GetTopicAsync
         }
 
         [HttpGet("{messageId}")]

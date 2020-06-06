@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using RestLib.Infrastructure.Entities;
+using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using RestLib.Infrastructure.Services.Interfaces;
@@ -23,7 +25,7 @@ namespace RestLib.Infrastructure.Services
         {
             var board = await _boardRepository.GetBoardAsync(boardId);
 
-            if(board == null)
+            if (board == null)
             {
                 return null;
             }
@@ -33,18 +35,24 @@ namespace RestLib.Infrastructure.Services
             return responseBoard;
         }
 
-        public async Task<IEnumerable<ResponseBoardDto>> GetBoardsAsync()
+        public async Task<PagedList<Board>> GetBoardsAsync(BoardsParams boardsParams)
         {
-            var boards = await _boardRepository.GetBoardsAsync();
 
-            if(boards == null)
-            {
-                return null;
-            }
+            var collection = await _boardRepository.GetBoardsAsync();
 
-            var responseBoards = _mapper.Map<IEnumerable<ResponseBoardDto>>(boards);
+            var pagedList = PagedList<Board>.Create(collection, boardsParams.PageNumber, boardsParams.PageSize);
 
-            return responseBoards;
+            return pagedList;
+            //var boards = await _boardRepository.GetBoardsAsync();
+
+            //if(boards == null)
+            //{
+            //    return null;
+            //}
+
+            //var responseBoards = _mapper.Map<IEnumerable<ResponseBoardDto>>(boards);
+
+            //return responseBoards;
         }
     }
 }

@@ -55,24 +55,13 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        //public async Task<IEnumerable<ResponseTopicDto>> GetTopicsAsync(Guid boardId)
-        //{
-        //    var topics = await _topicRepository.GetTopicsAsync(boardId);
-        //    var topicsDto = _mapper.Map<IEnumerable<ResponseTopicDto>>(topics);
-        //    return topicsDto;
-        //}
-
         public async Task<PagedList<Topic>> GetTopicsAsync(Guid boardId, TopicsParams topicsParams)
         {
             var collection = await _topicRepository.GetTopicsAsync(boardId);
 
-            //var dtoCollection = _mapper.Map<IQueryable<ResponseTopicDto>>(collection);
-
             var pagedList = PagedList<Topic>.Create(collection, topicsParams.PageNumber, topicsParams.PageSize);
 
             return pagedList;
-            //var topicsDto = _mapper.Map<PagedList<ResponseTopicDto>>(topics);
-            //return topicsDto;
         }
 
         public async Task<ResponseTopicDto> UpdateTopicAsync(Guid boardId, Guid topicId, UpdateTopicDto topic)

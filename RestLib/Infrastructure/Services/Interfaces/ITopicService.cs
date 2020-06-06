@@ -1,9 +1,7 @@
 ﻿using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
-using RestLib.Infrastructure.Parameters;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RestLib.Infrastructure.Services.Interfaces

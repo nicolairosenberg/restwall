@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
-using RestLib.Infrastructure.Parameters;
 using RestLib.Infrastructure.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -59,24 +58,37 @@ namespace RestWallAPI.Controllers
             return Ok(responseDtos);
         }
 
-
-        [HttpGet("{topicId}", Name = "GetTopic")]
+        [HttpGet("{topicId}", Name = "GetTopicAsync")]
         [HttpHead]
         public async Task<ActionResult<ResponseTopicDto>> GetTopicAsync(Guid boardId, Guid topicId)
         {
-            return await _topicService.GetTopicAsync(boardId, topicId);
+            var topicDto = await _topicService.GetTopicAsync(boardId, topicId);
+
+            if (topicDto == null)
+            {
+                return NotFound();
+            }
+
+            var links = CreateTopicLinks(boardId, topicId);
+
+            topicDto.Links = links;
+
+            return Ok(topicDto);
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreateTopicAsync")]
         public async Task<ActionResult<ResponseTopicDto>> CreateTopicAsync(Guid boardId, [FromBody] RequestTopicDto topic)
         {
             var responseDto = await _topicService.CreateTopicAsync(boardId, topic);
 
-            return CreatedAtRoute("GetTopic", new { boardId = responseDto.BoardId, topicId = responseDto.Id }, responseDto);
+            var links = CreateTopicLinks(boardId, responseDto.Id);
+
+            responseDto.Links = links;
+
+            return CreatedAtRoute("GetTopicAsync", new { boardId = responseDto.BoardId, topicId = responseDto.Id }, responseDto);
         }
 
-
-        [HttpPut("{topicId}")]
+        [HttpPut("{topicId}", Name = "UpdateTopicAsync")]
         public async Task<ActionResult<ResponseTopicDto>> UpdateTopicAsync(Guid boardId, Guid topicId, [FromBody] UpdateTopicDto topic)
         {
             if (!await _topicService.TopicExistsAsync(topicId))
@@ -89,7 +101,7 @@ namespace RestWallAPI.Controllers
             return Ok(updatedDto);
         }
 
-        [HttpDelete("{topicId}")]
+        [HttpDelete("{topicId}", Name = "DeleteTopicAsync")]
         public async Task<ActionResult<ResponseTopicDto>> DeleteTopicAsync(Guid boardId, Guid topicId)
         {
             if (!await _topicService.TopicExistsAsync(topicId))
@@ -143,6 +155,43 @@ namespace RestWallAPI.Controllers
 
                         });
             }
+        }
+
+        private IEnumerable<LinkDto> CreateTopicLinks(Guid boardId, Guid topicId)
+        {
+            var links = new List<LinkDto>();
+
+            links.Add(
+                new LinkDto(
+                    Url.Link("GetTopicAsync", new { topicId }),
+                    "self",
+                    "GET"));
+
+            links.Add(
+                new LinkDto(
+                    Url.Link("GetTopicsAsync", new { boardId }),
+                    "topics",
+                    "GET"));
+
+            links.Add(
+                new LinkDto(
+                    Url.Link("DeleteTopicAsync", new { boardId, topicId }),
+                    "delete_topic",
+                    "DELETE"));
+
+            links.Add(
+                new LinkDto(
+                    Url.Link("CreateMessageAsync", new { boardId, topicId }),
+                    "create_message",
+                    "POST"));
+
+            links.Add(
+                new LinkDto(
+                    Url.Link("GetMessagesAsync", new { boardId, topicId }),
+                    "messages",
+                    "GET"));
+
+            return links;
         }
     }
 }

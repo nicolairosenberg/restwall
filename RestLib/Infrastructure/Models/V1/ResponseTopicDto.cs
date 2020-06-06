@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace RestLib.Infrastructure.Models.V1
 {
@@ -11,5 +12,6 @@ namespace RestLib.Infrastructure.Models.V1
         public Guid UserId { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime LastActivityOn { get; set; }
+        public IEnumerable<LinkDto> Links { get; set; }
     }
 }
