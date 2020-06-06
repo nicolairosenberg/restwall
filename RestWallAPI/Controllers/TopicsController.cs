@@ -14,7 +14,7 @@ namespace RestWallAPI.Controllers
 {
 
     [ApiController]
-    [Route("boards/{boardId}/topics")]
+    [Route("api/boards/{boardId}/topics")]
     public class TopicsController : ControllerBase
     {
         private readonly ITopicService _topicService;
@@ -55,7 +55,7 @@ namespace RestWallAPI.Controllers
 
             var responseDtos = _mapper.Map<IEnumerable<ResponseTopicDto>>(topics);
 
-            var links = CreateTopicsLinks(topicsParams);
+            var links = CreateTopicsLinks(topicsParams, topics.HasPrevious, topics.HasNext);
 
             foreach (var item in responseDtos)
             {
@@ -171,7 +171,7 @@ namespace RestWallAPI.Controllers
 
             links.Add(
                 new LinkDto(
-                    Url.Link("GetTopicAsync", new { topicId }),
+                    Url.Link("GetTopicAsync", new { boardId, topicId }),
                     "self",
                     "GET"));
 
@@ -202,7 +202,7 @@ namespace RestWallAPI.Controllers
             return links;
         }
 
-        private IEnumerable<LinkDto> CreateTopicsLinks(TopicsParams topicsParams)
+        private IEnumerable<LinkDto> CreateTopicsLinks(TopicsParams topicsParams, bool hasPrevious, bool hasNext)
         {
             var links = new List<LinkDto>();
 
@@ -210,6 +210,25 @@ namespace RestWallAPI.Controllers
                 new LinkDto(CreateTopicResourceUri(topicsParams, UriTypeEnum.Current),
                     "self",
                     "GET"));
+
+            if (hasNext)
+            {
+                links.Add(
+                new LinkDto(CreateTopicResourceUri(topicsParams, UriTypeEnum.NextPage),
+                "nextPage",
+                "GET")
+                );
+            }
+
+            if (hasPrevious)
+            {
+                links.Add(
+                new LinkDto(CreateTopicResourceUri(topicsParams, UriTypeEnum.PreviousPage),
+                "previousPage",
+                "GET")
+                );
+            }
+
 
             return links;
         }

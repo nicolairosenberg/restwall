@@ -12,7 +12,7 @@ using RestLib.Infrastructure.Services.Interfaces;
 namespace RestWallAPI.Controllers
 {
     [ApiController]
-    [Route("boards")]
+    [Route("api/boards")]
     public class BoardsControllers : ControllerBase
     {
         private readonly IBoardService _boardService;
@@ -58,10 +58,11 @@ namespace RestWallAPI.Controllers
 
             var responseDtos = _mapper.Map<IEnumerable<ResponseBoardDto>>(boards);
             //var responseDtos = _mapper.Map<PagedList<ResponseBoardDto>>(boards);
-            
+            var links = CreateBoardsLinks(boardsParams, boards.HasPrevious, boards.HasNext);
+
             foreach (var item in responseDtos)
             {
-                item.Links = CreateBoardLinks(item.Id);
+                item.Links = links;
             }
 
             return Ok(responseDtos);
@@ -139,6 +140,36 @@ namespace RestWallAPI.Controllers
                     Url.Link("GetTopicsAsync", new { boardId }),
                     "topics",
                     "GET"));
+
+            return links;
+        }
+
+        private IEnumerable<LinkDto> CreateBoardsLinks(BoardsParams boardsParams, bool hasPrevious, bool hasNext)
+        {
+            var links = new List<LinkDto>();
+
+            links.Add(
+                new LinkDto(CreateBoardResourceUri(boardsParams, UriTypeEnum.Current),
+                    "self",
+                    "GET"));
+
+            if (hasNext)
+            {
+                links.Add(
+                new LinkDto(CreateBoardResourceUri(boardsParams, UriTypeEnum.NextPage),
+                "nextPage",
+                "GET")
+                );
+            }
+
+            if (hasPrevious)
+            {
+                links.Add(
+                new LinkDto(CreateBoardResourceUri(boardsParams, UriTypeEnum.PreviousPage),
+                "previousPage",
+                "GET")
+                );
+            }
 
             return links;
         }
