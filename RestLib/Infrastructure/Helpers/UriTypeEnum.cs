@@ -3,6 +3,7 @@
     public enum UriTypeEnum
     {
         PreviousPage,
-        NextPage
+        NextPage, 
+        Current
     }
 }

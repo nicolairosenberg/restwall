@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using RestLib.Infrastructure.Entities;
-using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
 using System;
 
@@ -16,7 +15,7 @@ namespace RestLib.Infrastructure.Profiles
                 .ForMember(dest => dest.LastServerResetOn,
                 opt => opt.MapFrom(src => src.CreatedOn));
 
-            CreateMap<PagedList<Board>, PagedList<ResponseBoardDto>>();
+            //CreateMap<PagedList<Board>, PagedList<ResponseBoardDto>>();
         }
     }
 }

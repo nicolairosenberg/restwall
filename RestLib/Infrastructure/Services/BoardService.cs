@@ -37,22 +37,11 @@ namespace RestLib.Infrastructure.Services
 
         public async Task<PagedList<Board>> GetBoardsAsync(BoardsParams boardsParams)
         {
-
             var collection = await _boardRepository.GetBoardsAsync();
 
             var pagedList = PagedList<Board>.Create(collection, boardsParams.PageNumber, boardsParams.PageSize);
 
             return pagedList;
-            //var boards = await _boardRepository.GetBoardsAsync();
-
-            //if(boards == null)
-            //{
-            //    return null;
-            //}
-
-            //var responseBoards = _mapper.Map<IEnumerable<ResponseBoardDto>>(boards);
-
-            //return responseBoards;
         }
     }
 }

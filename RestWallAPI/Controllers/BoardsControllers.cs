@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
@@ -14,38 +16,20 @@ namespace RestWallAPI.Controllers
     public class BoardsControllers : ControllerBase
     {
         private readonly IBoardService _boardService;
-        public BoardsControllers(IBoardService boardService)
+        private readonly IMapper _mapper;
+        public BoardsControllers(IBoardService boardService, IMapper mapper)
         {
             _boardService = boardService;
+            _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetBoardsAsync")]
         [HttpHead]
         public async Task<ActionResult<IEnumerable<ResponseBoardDto>>> GetBoardsAsync([FromQuery] BoardsParams boardsParams)
         {
             var boards = await _boardService.GetBoardsAsync(boardsParams);
-            //var previousPageLink = topics.HasPrevious ? CreateTopicResourceUri(topicsParams, UriTypeEnum.PreviousPage) : null;
-            //var nextPageLink = topics.HasNext ? CreateTopicResourceUri(topicsParams, UriTypeEnum.NextPage) : null;
 
-            //var paginationMetaData = new
-            //{
-            //    totalCount = topics.TotalCount,
-            //    pageSize = topics.PageSize,
-            //    currentPage = topics.CurrentPage,
-            //    totalPages = topics.TotalPages,
-            //    previousPageLink,
-            //    nextPageLink
-            //};
-
-            //var paginationMetaDataJson = JsonSerializer.Serialize(paginationMetaData);
-
-            //Response.Headers.Add("X-Pagination", paginationMetaDataJson);
-
-            //var responseDtos = _mapper.Map<IEnumerable<ResponseTopicDto>>(topics);
-
-            ////var boards = await _boardService.GetBoardsAsync();
-
-            if(boards == null)
+            if (boards == null)
             {
                 return NotFound();
             }
@@ -55,10 +39,35 @@ namespace RestWallAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(boards);
+            var previousPageLink = boards.HasPrevious ? CreateBoardResourceUri(boardsParams, UriTypeEnum.PreviousPage) : null;
+            var nextPageLink = boards.HasNext ? CreateBoardResourceUri(boardsParams, UriTypeEnum.NextPage) : null;
+
+            var paginationMetaData = new
+            {
+                totalCount = boards.TotalCount,
+                pageSize = boards.PageSize,
+                currentPage = boards.CurrentPage,
+                totalPages = boards.TotalPages,
+                previousPageLink,
+                nextPageLink
+            };
+
+            var paginationMetaDataJson = JsonSerializer.Serialize(paginationMetaData);
+
+            Response.Headers.Add("X-Pagination", paginationMetaDataJson);
+
+            var responseDtos = _mapper.Map<IEnumerable<ResponseBoardDto>>(boards);
+            //var responseDtos = _mapper.Map<PagedList<ResponseBoardDto>>(boards);
+            
+            foreach (var item in responseDtos)
+            {
+                item.Links = CreateBoardLinks(item.Id);
+            }
+
+            return Ok(responseDtos);
         }
 
-        [HttpGet("{boardId}")]
+        [HttpGet("{boardId}", Name = "GetBoardAsync")]
         [HttpHead]
         public async Task<ActionResult<ResponseBoardDto>> GetBoardAsync(Guid boardId)
         {
@@ -68,6 +77,10 @@ namespace RestWallAPI.Controllers
             {
                 return NotFound();
             }
+
+            var links = CreateBoardLinks(boardId);
+
+            board.Links = links;
 
             return Ok(board);
         }
@@ -79,12 +92,12 @@ namespace RestWallAPI.Controllers
             return Ok();
         }
 
-        private string CreateTopicResourceUri(BoardsParams uriParams, UriTypeEnum uriType)
+        private string CreateBoardResourceUri(BoardsParams uriParams, UriTypeEnum uriType)
         {
             switch (uriType)
             {
                 case UriTypeEnum.PreviousPage:
-                    return Url.Link("GetTopicsAsync",
+                    return Url.Link("GetBoardsAsync",
                         new
                         {
                             pageNumber = uriParams.PageNumber - 1,
@@ -92,15 +105,16 @@ namespace RestWallAPI.Controllers
 
                         });
                 case UriTypeEnum.NextPage:
-                    return Url.Link("GetTopicsAsync",
+                    return Url.Link("GetBoardsAsync",
                         new
                         {
                             pageNumber = uriParams.PageNumber + 1,
                             pageSize = uriParams.PageSize
 
                         });
+                case UriTypeEnum.Current:
                 default:
-                    return Url.Link("GetTopicsAsync",
+                    return Url.Link("GetBoardsAsync",
                         new
                         {
                             pageNumber = uriParams.PageNumber,
@@ -110,13 +124,13 @@ namespace RestWallAPI.Controllers
             }
         }
 
-        private IEnumerable<LinkDto> CreateBoardLinks(Guid boardId, Guid topicId)
+        private IEnumerable<LinkDto> CreateBoardLinks(Guid boardId)
         {
             var links = new List<LinkDto>();
 
             links.Add(
                 new LinkDto(
-                    Url.Link("GetTopicAsync", new { topicId }),
+                    Url.Link("GetBoardAsync", new { boardId }),
                     "self",
                     "GET"));
 
@@ -124,24 +138,6 @@ namespace RestWallAPI.Controllers
                 new LinkDto(
                     Url.Link("GetTopicsAsync", new { boardId }),
                     "topics",
-                    "GET"));
-
-            links.Add(
-                new LinkDto(
-                    Url.Link("DeleteTopicAsync", new { boardId, topicId }),
-                    "delete_topic",
-                    "DELETE"));
-
-            links.Add(
-                new LinkDto(
-                    Url.Link("CreateTopicsAsync", new { boardId, topicId }),
-                    "create_message",
-                    "POST"));
-
-            links.Add(
-                new LinkDto(
-                    Url.Link("GetMessagesAsync", new { boardId, topicId }),
-                    "messages",
                     "GET"));
 
             return links;

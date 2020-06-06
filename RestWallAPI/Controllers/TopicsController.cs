@@ -6,6 +6,7 @@ using RestLib.Infrastructure.Models.V1;
 using RestLib.Infrastructure.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -53,7 +54,13 @@ namespace RestWallAPI.Controllers
             Response.Headers.Add("X-Pagination", paginationMetaDataJson);
 
             var responseDtos = _mapper.Map<IEnumerable<ResponseTopicDto>>(topics);
-            //var responseDtos = _mapp
+
+            var links = CreateTopicsLinks(topicsParams);
+
+            foreach (var item in responseDtos)
+            {
+                item.Links = links;
+            }
 
             return Ok(responseDtos);
         }
@@ -146,6 +153,7 @@ namespace RestWallAPI.Controllers
                             pageSize = topicsParams.PageSize
 
                         });
+                case UriTypeEnum.Current:
                 default:
                     return Url.Link("GetTopicsAsync",
                         new
@@ -189,6 +197,18 @@ namespace RestWallAPI.Controllers
                 new LinkDto(
                     Url.Link("GetMessagesAsync", new { boardId, topicId }),
                     "messages",
+                    "GET"));
+
+            return links;
+        }
+
+        private IEnumerable<LinkDto> CreateTopicsLinks(TopicsParams topicsParams)
+        {
+            var links = new List<LinkDto>();
+
+            links.Add(
+                new LinkDto(CreateTopicResourceUri(topicsParams, UriTypeEnum.Current),
+                    "self",
                     "GET"));
 
             return links;
