@@ -1,16 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RestLib.Infrastructure.Entities;
+using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
 using RestLib.Infrastructure.Parameters;
 using RestLib.Infrastructure.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace RestWallAPI.Controllers
 {
-    
+
     [ApiController]
     [Route("boards/{boardId}/topics")]
     public class TopicsController : ControllerBase
@@ -22,20 +24,35 @@ namespace RestWallAPI.Controllers
             _topicService = topicService;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetTopicsAsync")]
         [HttpHead]
         public async Task<ActionResult<IEnumerable<ResponseTopicDto>>> GetTopicsAsync(Guid boardId, [FromQuery] TopicsParams topicsParams)
         {
-            if(topicsParams == null)
-            {
-                topicsParams = new TopicsParams();
-            }
             var responseDtos = await _topicService.GetTopicsAsync(boardId, topicsParams);
-            
-            if(responseDtos == null)
+
+            if (responseDtos == null)
             {
                 return NotFound();
             }
+
+            var previousPageLink = responseDtos.HasPrevious ? CreateTopicResourceUri(topicsParams, UriTypeEnum.PreviousPage) : null;
+            var nextPageLink = responseDtos.HasNext ? CreateTopicResourceUri(topicsParams, UriTypeEnum.NextPage) : null;
+
+            var paginationMetaData = new
+            {
+                totalCount = responseDtos.TotalCount,
+                pageSize = responseDtos.PageSize,
+                currentPage = responseDtos.CurrentPage,
+                totalPages = responseDtos.TotalPages,
+                previousPageLink,
+                nextPageLink
+            };
+
+            var paginationMetaDataJson = JsonSerializer.Serialize(paginationMetaData);
+
+            Response.Headers.Add("X-Pagination", paginationMetaDataJson);
+
+            var responseDtos = _mapp
 
             return Ok(responseDtos);
         }
@@ -60,7 +77,7 @@ namespace RestWallAPI.Controllers
         [HttpPut("{topicId}")]
         public async Task<ActionResult<ResponseTopicDto>> UpdateTopicAsync(Guid boardId, Guid topicId, [FromBody] UpdateTopicDto topic)
         {
-            if (! await _topicService.TopicExistsAsync(topicId))
+            if (!await _topicService.TopicExistsAsync(topicId))
             {
                 return NotFound();
             }
@@ -80,7 +97,7 @@ namespace RestWallAPI.Controllers
 
             var topic = await _topicService.GetTopicAsync(boardId, topicId);
 
-            if(topic == null)
+            if (topic == null)
             {
                 return NoContent();
             }
@@ -93,6 +110,37 @@ namespace RestWallAPI.Controllers
         {
             Response.Headers.Add("Allow", "GET, OPTIONS, POST, PUT, DELETE");
             return Ok();
+        }
+
+        private string CreateTopicResourceUri(TopicsParams topicsParams, UriTypeEnum uriType)
+        {
+            switch (uriType)
+            {
+                case UriTypeEnum.PreviousPage:
+                    return Url.Link("GetTopicsAsync",
+                        new
+                        {
+                            pageNumber = topicsParams.PageNumber - 1,
+                            pageSize = topicsParams.PageSize
+
+                        });
+                case UriTypeEnum.NextPage:
+                    return Url.Link("GetTopicsAsync",
+                        new
+                        {
+                            pageNumber = topicsParams.PageNumber + 1,
+                            pageSize = topicsParams.PageSize
+
+                        });
+                default:
+                    return Url.Link("GetTopicsAsync",
+                        new
+                        {
+                            pageNumber = topicsParams.PageNumber,
+                            pageSize = topicsParams.PageSize
+
+                        });
+            }
         }
     }
 }

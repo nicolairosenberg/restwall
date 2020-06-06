@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RestLib.Infrastructure.Entities;
+using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
 using RestLib.Infrastructure.Parameters;
 using RestLib.Infrastructure.Repositories.Interfaces;
@@ -60,11 +61,11 @@ namespace RestLib.Infrastructure.Services
         //    return topicsDto;
         //}
 
-        public async Task<IEnumerable<ResponseTopicDto>> GetTopicsAsync(Guid boardId, TopicsParams topicsParams)
+        public async Task<PagedList<Topic>> GetTopicsAsync(Guid boardId, TopicsParams topicsParams)
         {
-            var topics = await _topicRepository.GetTopicsAsync(boardId, topicsParams);
-            var topicsDto = _mapper.Map<IEnumerable<ResponseTopicDto>>(topics);
-            return topicsDto;
+            return await _topicRepository.GetTopicsAsync(boardId, topicsParams);
+            //var topicsDto = _mapper.Map<PagedList<ResponseTopicDto>>(topics);
+            //return topicsDto;
         }
 
         public async Task<ResponseTopicDto> UpdateTopicAsync(Guid boardId, Guid topicId, UpdateTopicDto topic)

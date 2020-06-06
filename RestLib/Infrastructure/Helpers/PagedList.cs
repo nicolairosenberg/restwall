@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RestLib.Infrastructure.Helpers
 {
-    public class PagedList<T>: List<T>
+    public class PagedList<T> : List<T>
     {
         public int CurrentPage { get; private set; }
         public int TotalPages { get; private set; }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestLib.Infrastructure.Entities;
+using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Parameters;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using System;
@@ -35,16 +36,13 @@ namespace RestLib.Infrastructure.Repositories
         //    return await _dataContext.Topics.Where(x => x.BoardId == boardId).ToListAsync();
         //}
 
-        public async Task<IEnumerable<Topic>> GetTopicsAsync(Guid boardId, TopicsParams topicsParams)
+        public async Task<PagedList<Topic>> GetTopicsAsync(Guid boardId, TopicsParams topicsParams)
         {
             var collection = _dataContext.Topics as IQueryable<Topic>;
 
             //return await _dataContext.Topics.Where(x => x.BoardId == boardId).ToListAsync();
 
-            return await collection
-                .Skip(topicsParams.PageSize * (topicsParams.PageNumber - 1))
-                .Take(topicsParams.PageSize)
-                .ToListAsync();
+            return PagedList<Topic>.Create(collection, topicsParams.PageNumber, topicsParams.PageSize);
         }
 
         public async Task<Topic> UpdateTopicAsync(Topic topic)
