@@ -17,6 +17,7 @@ namespace RestWallAPI.Controllers
     [ApiController]
     [Route("api/boards/{boardId}/topics")]
     [ResponseCache(CacheProfileName = "0SecondsCacheProfile")]
+    [Produces("application/json", "application/xml", "application/vnd.restwall.hateoas+json")]
     public class TopicsController : ControllerBase
     {
         private readonly ITopicService _topicService;
@@ -29,7 +30,8 @@ namespace RestWallAPI.Controllers
 
         [HttpGet(Name = "GetTopics")]
         [HttpHead]
-        public async Task<ActionResult<IEnumerable<ResponseTopicDto>>> GetTopicsAsync(Guid boardId, [FromQuery] TopicsParams topicsParams)
+        //[Produces("application/json", "application/xml", "application/vnd.restwall.hateoas+json")]
+        public async Task<ActionResult<IEnumerable<ResponseTopicDto>>> GetTopicsAsync(Guid boardId, [FromQuery] TopicsParams topicsParams, [FromHeader(Name = "Accept")] string mediaType)
         {
             PagedList<Topic> topics = await _topicService.GetTopicsAsync(boardId, topicsParams);
 
@@ -69,7 +71,8 @@ namespace RestWallAPI.Controllers
 
         [HttpGet("{topicId}", Name = "GetTopic")]
         [HttpHead]
-        public async Task<ActionResult<ResponseTopicDto>> GetTopicAsync(Guid boardId, Guid topicId)
+        //[Produces("application/json", "application/xml", "application/vnd.restwall.hateoas+json")]
+        public async Task<ActionResult<ResponseTopicDto>> GetTopicAsync(Guid boardId, Guid topicId, [FromHeader(Name = "Accept")] string mediaType)
         {
             var topicDto = await _topicService.GetTopicAsync(boardId, topicId);
 
@@ -86,7 +89,8 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpPost(Name = "CreateTopic")]
-        public async Task<ActionResult<ResponseTopicDto>> CreateTopicAsync(Guid boardId, [FromBody] RequestTopicDto topic)
+        
+        public async Task<ActionResult<ResponseTopicDto>> CreateTopicAsync(Guid boardId, [FromBody] RequestTopicDto topic, [FromHeader(Name = "Accept")] string mediaType)
         {
             var responseDto = await _topicService.CreateTopicAsync(boardId, topic);
 
@@ -98,7 +102,8 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpPut("{topicId}", Name = "UpdateTopic")]
-        public async Task<ActionResult<ResponseTopicDto>> UpdateTopicAsync(Guid boardId, Guid topicId, [FromBody] UpdateTopicDto topic)
+        //[Produces("application/json", "application/xml", "application/vnd.restwall.hateoas+json")]
+        public async Task<ActionResult<ResponseTopicDto>> UpdateTopicAsync(Guid boardId, Guid topicId, [FromBody] UpdateTopicDto topic, [FromHeader(Name = "Accept")] string mediaType)
         {
             if (!await _topicService.TopicExistsAsync(topicId))
             {
@@ -111,7 +116,7 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpDelete("{topicId}", Name = "DeleteTopic")]
-        public async Task<ActionResult<ResponseTopicDto>> DeleteTopicAsync(Guid boardId, Guid topicId)
+        public async Task<ActionResult<ResponseTopicDto>> DeleteTopicAsync(Guid boardId, Guid topicId, [FromHeader(Name = "Accept")] string mediaType)
         {
             if (!await _topicService.TopicExistsAsync(topicId))
             {

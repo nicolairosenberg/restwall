@@ -11,7 +11,7 @@ namespace RestWallAPI.Controllers
 
     [ApiController]
     [Route("api/users")]
-    [ResponseCache(CacheProfileName = "0SecondsCacheProfile")]
+    [ResponseCache(CacheProfileName = "360SecondsCacheProfile")]
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;

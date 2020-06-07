@@ -14,7 +14,8 @@ namespace RestWallAPI.Controllers
 {
     [ApiController]
     [Route("api/boards")]
-    [ResponseCache(CacheProfileName = "360SecondsCacheProfile")]
+    [ResponseCache(CacheProfileName = "0SecondsCacheProfile")]
+    [Produces("application/json", "application/xml", "application/vnd.restwall.hateoas+json")]
     public class BoardsControllers : ControllerBase
     {
         private readonly IBoardService _boardService;
@@ -25,10 +26,16 @@ namespace RestWallAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet(Name = "GetBoardsAsync")]
+        [HttpGet(Name = "GetBoards")]
         [HttpHead]
-        public async Task<ActionResult<IEnumerable<ResponseBoardDto>>> GetBoardsAsync([FromQuery] BoardsParams boardsParams)
+        //[Produces("application/json", "application/xml", "application/vnd.restwall.hateoas+json")]
+        public async Task<ActionResult> GetBoardsAsync([FromQuery] BoardsParams boardsParams, [FromHeader(Name = "Accept")] string mediaType)
         {
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
+
             var boards = await _boardService.GetBoardsAsync(boardsParams);
 
             if (boards == null)
@@ -58,26 +65,41 @@ namespace RestWallAPI.Controllers
 
             Response.Headers.Add("X-Pagination", paginationMetaDataJson);
 
-            
-            var responseDtos = _mapper.Map<IEnumerable<ResponseBoardDto>>(boards);
-            //var responseDtos = _mapper.Map<PagedList<ResponseBoardDto>>(boards);
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
 
-            //foreach (var item in responseDtos)
-            //{
-            //    item.Links = CreateBoardLinks(item.Id);
-            //}
+            if (includeLinks)
+            {
+                var boardsWithLinks = new List<ResponseBoardLinksDto>();
+
+                foreach (var item in boards)
+                {
+                    IEnumerable<LinkDto> links = new List<LinkDto>();
+                    links = CreateBoardLinks(item.Id);
+                    var boardWithLinks = _mapper.Map<ResponseBoardLinksDto>(item);
+                    boardWithLinks.Links = links;
+
+                    boardsWithLinks.Add(boardWithLinks);
+                }
+
+                var envelopeWithLinks = new EnvelopeResponseBoardLinksDto();
+                envelopeWithLinks.Value = boardsWithLinks;
+                envelopeWithLinks.Links = CreateBoardsLinks(boardsParams, boards.HasPrevious, boards.HasNext);
+
+                return Ok(envelopeWithLinks);
+            }
+
+            var responseDtos = _mapper.Map<IEnumerable<ResponseBoardDto>>(boards);
 
             return Ok(responseDtos);
         }
 
-        [Produces("application/json", "application/xml",
-            "application/vnd.restwall.hateoas+json")]
-        [HttpGet("{boardId}", Name = "GetBoardAsync")]
+        
+        [HttpGet("{boardId}", Name = "GetBoard")]
         [HttpHead]
-        public async Task<ActionResult> GetBoardAsync(Guid boardId,
-            [FromHeader(Name = "Accept")] string mediaType)
+        //[Produces("application/json", "application/xml", "application/vnd.restwall.hateoas+json")]
+        public async Task<ActionResult> GetBoardAsync(Guid boardId, [FromHeader(Name = "Accept")] string mediaType)
         {
-            // NR: could use tryparselist instead..
+            // NR: could use tryparselist if I wanted to support multiple media types.
             if(!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
             {
                 return BadRequest();
@@ -132,7 +154,7 @@ namespace RestWallAPI.Controllers
             switch (uriType)
             {
                 case UriTypeEnum.PreviousPage:
-                    return Url.Link("GetBoardsAsync",
+                    return Url.Link("GetBoards",
                         new
                         {
                             pageNumber = uriParams.PageNumber - 1,
@@ -140,7 +162,7 @@ namespace RestWallAPI.Controllers
 
                         });
                 case UriTypeEnum.NextPage:
-                    return Url.Link("GetBoardsAsync",
+                    return Url.Link("GetBoards",
                         new
                         {
                             pageNumber = uriParams.PageNumber + 1,
@@ -149,7 +171,7 @@ namespace RestWallAPI.Controllers
                         });
                 case UriTypeEnum.Current:
                 default:
-                    return Url.Link("GetBoardsAsync",
+                    return Url.Link("GetBoards",
                         new
                         {
                             pageNumber = uriParams.PageNumber,
@@ -165,13 +187,13 @@ namespace RestWallAPI.Controllers
 
             links.Add(
                 new LinkDto(
-                    Url.Link("GetBoardAsync", new { boardId }),
+                    Url.Link("GetBoard", new { boardId }),
                     "self",
                     "GET"));
 
             links.Add(
                 new LinkDto(
-                    Url.Link("GetTopicsAsync", new { boardId }),
+                    Url.Link("GetTopics", new { boardId }),
                     "topics",
                     "GET"));
 
