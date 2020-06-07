@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,12 +32,13 @@ namespace RestWallAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews(options =>
+            services
+            .AddControllersWithViews(options =>
             {
-
                 options.ReturnHttpNotAcceptable = true;
 
-            }).AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+            })
+            .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
             .AddXmlDataContractSerializerFormatters()
             .ConfigureApiBehaviorOptions(setupAction =>
             {
@@ -77,6 +80,16 @@ namespace RestWallAPI
                         ContentTypes = { "application/problem+json" }
                     };
                 };
+            });
+
+            services.Configure<MvcOptions>(config => 
+            {
+                var newtonsoftOutputFormatter = config.OutputFormatters.OfType<NewtonsoftJsonOutputFormatter>()?.FirstOrDefault();
+
+                if(newtonsoftOutputFormatter != null)
+                {
+                    newtonsoftOutputFormatter.SupportedMediaTypes.Add("application/vnd.restwall.hateoas+json");
+                }
             });
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

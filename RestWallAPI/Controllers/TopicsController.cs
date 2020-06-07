@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
+using RestLib.Infrastructure.Models.V1.Topics;
 using RestLib.Infrastructure.Services.Interfaces;
 using System;
 using System.Collections.Generic;

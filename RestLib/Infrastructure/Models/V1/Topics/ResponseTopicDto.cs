@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RestLib.Infrastructure.Models.V1
+namespace RestLib.Infrastructure.Models.V1.Topics
 {
     public class ResponseTopicDto
     {

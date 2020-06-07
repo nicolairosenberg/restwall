@@ -2,6 +2,7 @@
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
+using RestLib.Infrastructure.Models.V1.Boards;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using RestLib.Infrastructure.Services.Interfaces;
 using System;

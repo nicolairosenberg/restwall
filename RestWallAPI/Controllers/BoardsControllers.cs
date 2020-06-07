@@ -5,8 +5,11 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
 using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
+using RestLib.Infrastructure.Models.V1.Boards;
 using RestLib.Infrastructure.Services.Interfaces;
 
 namespace RestWallAPI.Controllers
@@ -52,26 +55,35 @@ namespace RestWallAPI.Controllers
                 nextPageLink
             };
 
-            var paginationMetaDataJson = JsonSerializer.Serialize(paginationMetaData);
+            var paginationMetaDataJson = System.Text.Json.JsonSerializer.Serialize(paginationMetaData);
 
             Response.Headers.Add("X-Pagination", paginationMetaDataJson);
 
+            
             var responseDtos = _mapper.Map<IEnumerable<ResponseBoardDto>>(boards);
             //var responseDtos = _mapper.Map<PagedList<ResponseBoardDto>>(boards);
-            var links = CreateBoardsLinks(boardsParams, boards.HasPrevious, boards.HasNext);
 
-            foreach (var item in responseDtos)
-            {
-                item.Links = links;
-            }
+            //foreach (var item in responseDtos)
+            //{
+            //    item.Links = CreateBoardLinks(item.Id);
+            //}
 
             return Ok(responseDtos);
         }
 
+        [Produces("application/json", "application/xml",
+            "application/vnd.restwall.hateoas+json")]
         [HttpGet("{boardId}", Name = "GetBoardAsync")]
         [HttpHead]
-        public async Task<ActionResult<ResponseBoardDto>> GetBoardAsync(Guid boardId)
+        public async Task<ActionResult> GetBoardAsync(Guid boardId,
+            [FromHeader(Name = "Accept")] string mediaType)
         {
+            // NR: could use tryparselist instead..
+            if(!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
+
             var board = await _boardService.GetBoardAsync(boardId);
 
             if (board == null)
@@ -79,9 +91,32 @@ namespace RestWallAPI.Controllers
                 return NotFound();
             }
 
-            var links = CreateBoardLinks(boardId);
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
 
-            board.Links = links;
+            if (includeLinks)
+            {
+                IEnumerable<LinkDto> links = new List<LinkDto>();
+                links = CreateBoardLinks(boardId);
+                var boardWithLinks = _mapper.Map<ResponseBoardLinksDto>(board);
+                boardWithLinks.Links = links;
+
+                return Ok(boardWithLinks);
+            }
+
+            //var primaryMediaType = includeLinks ?
+            //    parsedMediaType.SubTypeWithoutSuffix.Substring(0, parsedMediaType.SubTypeWithoutSuffix.Length - 8)
+            //    : parsedMediaType.SubTypeWithoutSuffix;
+
+            //if(primaryMediaType == "vnd.restwall.board.full")
+            //{
+            //    if (includeLinks)
+            //    {
+            //        var boardWithLinks = _mapper.Map<ResponseBoardLinksDto>(board);
+            //        boardWithLinks.Links = links;
+
+            //        return Ok(boardWithLinks);
+            //    }
+            //}
 
             return Ok(board);
         }
@@ -140,6 +175,12 @@ namespace RestWallAPI.Controllers
                     Url.Link("GetTopicsAsync", new { boardId }),
                     "topics",
                     "GET"));
+
+            //links.Add(
+            //    new LinkDto(
+            //        Url.Link("CreateTopicAsync", new { boardId }),
+            //        "topics",
+            //        "GET"));
 
             return links;
         }

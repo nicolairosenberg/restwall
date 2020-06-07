@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RestLib.Infrastructure.Models.V1
+namespace RestLib.Infrastructure.Models.V1.Messages
 {
     public class RequestMessageDto
     {

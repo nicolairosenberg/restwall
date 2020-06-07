@@ -1,8 +1,9 @@
-﻿using System;
+﻿using RestLib.Infrastructure.Models.V1.Messages;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace RestLib.Infrastructure.Models.V1
+namespace RestLib.Infrastructure.Models.V1.Topics
 {
     public class RequestTopicDto : IValidatableObject
     {
