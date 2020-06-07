@@ -16,7 +16,7 @@ namespace RestWallAPI.Controllers
 
     [ApiController]
     [Route("api/boards/{boardId}/topics")]
-    [ResponseCache(CacheProfileName = "360SecondsCacheProfile")]
+    [ResponseCache(CacheProfileName = "0SecondsCacheProfile")]
     public class TopicsController : ControllerBase
     {
         private readonly ITopicService _topicService;
@@ -27,7 +27,7 @@ namespace RestWallAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet(Name = "GetTopicsAsync")]
+        [HttpGet(Name = "GetTopics")]
         [HttpHead]
         public async Task<ActionResult<IEnumerable<ResponseTopicDto>>> GetTopicsAsync(Guid boardId, [FromQuery] TopicsParams topicsParams)
         {
@@ -67,7 +67,7 @@ namespace RestWallAPI.Controllers
             return Ok(responseDtos);
         }
 
-        [HttpGet("{topicId}", Name = "GetTopicAsync")]
+        [HttpGet("{topicId}", Name = "GetTopic")]
         [HttpHead]
         public async Task<ActionResult<ResponseTopicDto>> GetTopicAsync(Guid boardId, Guid topicId)
         {
@@ -85,7 +85,7 @@ namespace RestWallAPI.Controllers
             return Ok(topicDto);
         }
 
-        [HttpPost(Name = "CreateTopicAsync")]
+        [HttpPost(Name = "CreateTopic")]
         public async Task<ActionResult<ResponseTopicDto>> CreateTopicAsync(Guid boardId, [FromBody] RequestTopicDto topic)
         {
             var responseDto = await _topicService.CreateTopicAsync(boardId, topic);
@@ -94,10 +94,10 @@ namespace RestWallAPI.Controllers
 
             responseDto.Links = links;
 
-            return CreatedAtRoute("GetTopicAsync", new { boardId = responseDto.BoardId, topicId = responseDto.Id }, responseDto);
+            return CreatedAtRoute("GetTopic", new { boardId = responseDto.BoardId, topicId = responseDto.Id }, responseDto);
         }
 
-        [HttpPut("{topicId}", Name = "UpdateTopicAsync")]
+        [HttpPut("{topicId}", Name = "UpdateTopic")]
         public async Task<ActionResult<ResponseTopicDto>> UpdateTopicAsync(Guid boardId, Guid topicId, [FromBody] UpdateTopicDto topic)
         {
             if (!await _topicService.TopicExistsAsync(topicId))
@@ -110,7 +110,7 @@ namespace RestWallAPI.Controllers
             return Ok(updatedDto);
         }
 
-        [HttpDelete("{topicId}", Name = "DeleteTopicAsync")]
+        [HttpDelete("{topicId}", Name = "DeleteTopic")]
         public async Task<ActionResult<ResponseTopicDto>> DeleteTopicAsync(Guid boardId, Guid topicId)
         {
             if (!await _topicService.TopicExistsAsync(topicId))
@@ -129,7 +129,7 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpOptions]
-        public IActionResult GetTopicOptions()
+        public IActionResult GetTopicsOptions()
         {
             Response.Headers.Add("Allow", "GET, OPTIONS, POST, PUT, DELETE");
             return Ok();
@@ -140,7 +140,7 @@ namespace RestWallAPI.Controllers
             switch (uriType)
             {
                 case UriTypeEnum.PreviousPage:
-                    return Url.Link("GetTopicsAsync",
+                    return Url.Link("GetTopics",
                         new
                         {
                             pageNumber = topicsParams.PageNumber - 1,
@@ -148,7 +148,7 @@ namespace RestWallAPI.Controllers
 
                         });
                 case UriTypeEnum.NextPage:
-                    return Url.Link("GetTopicsAsync",
+                    return Url.Link("GetTopics",
                         new
                         {
                             pageNumber = topicsParams.PageNumber + 1,
@@ -157,7 +157,7 @@ namespace RestWallAPI.Controllers
                         });
                 case UriTypeEnum.Current:
                 default:
-                    return Url.Link("GetTopicsAsync",
+                    return Url.Link("GetTopics",
                         new
                         {
                             pageNumber = topicsParams.PageNumber,
@@ -173,31 +173,31 @@ namespace RestWallAPI.Controllers
 
             links.Add(
                 new LinkDto(
-                    Url.Link("GetTopicAsync", new { boardId, topicId }),
+                    Url.Link("GetTopic", new { boardId, topicId }),
                     "self",
                     "GET"));
 
             links.Add(
                 new LinkDto(
-                    Url.Link("GetTopicsAsync", new { boardId }),
+                    Url.Link("GetTopics", new { boardId }),
                     "topics",
                     "GET"));
 
             links.Add(
                 new LinkDto(
-                    Url.Link("DeleteTopicAsync", new { boardId, topicId }),
+                    Url.Link("DeleteTopic", new { boardId, topicId }),
                     "delete_topic",
                     "DELETE"));
 
             links.Add(
                 new LinkDto(
-                    Url.Link("CreateMessageAsync", new { boardId, topicId }),
+                    Url.Link("CreateMessage", new { boardId, topicId }),
                     "create_message",
                     "POST"));
 
             links.Add(
                 new LinkDto(
-                    Url.Link("GetMessagesAsync", new { boardId, topicId }),
+                    Url.Link("GetMessages", new { boardId, topicId }),
                     "messages",
                     "GET"));
 

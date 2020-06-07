@@ -121,7 +121,7 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpOptions]
-        public IActionResult GetBoardOptions()
+        public IActionResult GetBoardsOptions()
         {
             Response.Headers.Add("Allow", "GET, OPTIONS");
             return Ok();

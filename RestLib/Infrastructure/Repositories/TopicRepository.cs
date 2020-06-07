@@ -36,8 +36,6 @@ namespace RestLib.Infrastructure.Repositories
 
         public async Task<Topic> UpdateTopicAsync(Topic topic)
         {
-            topic.Title = topic.Title;
-            topic.Text = topic.Text;
             topic.UpdatedOn = DateTime.Now;
             _dataContext.Update(topic);
             await _dataContext.SaveChangesAsync();

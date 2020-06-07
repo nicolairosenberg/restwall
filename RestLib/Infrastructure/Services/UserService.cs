@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using RestLib.Infrastructure.Services.Interfaces;
 
 namespace RestLib.Infrastructure.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
     }
 }

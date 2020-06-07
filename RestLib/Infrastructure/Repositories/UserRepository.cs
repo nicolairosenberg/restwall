@@ -1,6 +1,8 @@
-﻿using RestLib.Infrastructure.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestLib.Infrastructure.Repositories
@@ -14,34 +16,43 @@ namespace RestLib.Infrastructure.Repositories
             _dataContext = dataContext;
         }
 
-        public Task CreateUserAsync()
+        public async Task<User> CreateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            await _dataContext.Users.AddAsync(user);
+            await _dataContext.SaveChangesAsync();
+            return user;
         }
 
-        public Task GetUserAsync()
+        public async Task<User> GetUserAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            return await _dataContext.Users.Where(x => x.Id == userId).SingleOrDefaultAsync();
         }
 
-        public Task GetUsersAsync()
+        public async Task<IQueryable<User>> GetUsersAsync()
         {
-            throw new NotImplementedException();
+            return _dataContext.Users as IQueryable<User>;
         }
 
-        public Task UpdateUserAsync()
+        public async Task<User> UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            user.UpdatedOn = DateTime.Now;
+            _dataContext.Update(user);
+            await _dataContext.SaveChangesAsync();
+
+            return user;
         }
 
-        public Task DeleteUserAsync()
+        public async Task<User> DeleteUserAsync(User user)
         {
-            throw new NotImplementedException();
+            _dataContext.Users.Remove(user);
+            await _dataContext.SaveChangesAsync();
+
+            return user;
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+
         }
     }
 }

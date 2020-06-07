@@ -43,6 +43,9 @@ namespace RestWallAPI
                 options.CacheProfiles.Add("360SecondsCacheProfile",
                         new CacheProfile() { Duration = 360 }
                     );
+                options.CacheProfiles.Add("0SecondsCacheProfile",
+                        new CacheProfile() { Duration = 0 }
+                    );
 
             })
             .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)

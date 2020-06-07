@@ -1,6 +1,6 @@
 ﻿namespace RestLib.Infrastructure.Helpers
 {
-    public class TopicsParams
+    public class UsersParams
     {
         const int maxPageSize = 100;
         public int PageNumber { get; set; } = 1;

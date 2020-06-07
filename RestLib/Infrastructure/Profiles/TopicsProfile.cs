@@ -18,7 +18,7 @@ namespace RestLib.Infrastructure.Profiles
             CreateMap<RequestTopicDto, Topic>()
                 .ForMember(dest => dest.Messages, opt => opt.MapFrom(src => src.Messages));//.ReverseMap();
 
-            CreateMap<UpdateTopicDto, Topic>();
+            CreateMap<UpdateMessageDto, Topic>();
 
             //CreateMap<PagedList<Topic>, PagedList<ResponseTopicDto>>();
         }
