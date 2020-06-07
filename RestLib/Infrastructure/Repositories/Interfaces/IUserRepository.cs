@@ -12,5 +12,6 @@ namespace RestLib.Infrastructure.Repositories.Interfaces
         Task<IQueryable<User>> GetUsersAsync();
         Task<User> UpdateUserAsync(User user);
         Task<User> DeleteUserAsync(User user);
+        Task<bool> ExistsAsync(Guid userId);
     }
 }

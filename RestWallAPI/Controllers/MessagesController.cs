@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
+using RestLib.Infrastructure.Models.V1.Messages;
 using RestLib.Infrastructure.Services.Interfaces;
 
 namespace RestWallAPI.Controllers
@@ -30,7 +32,40 @@ namespace RestWallAPI.Controllers
         [HttpGet(Name = "GetMessages")]
         public async Task<IActionResult> GetMessagesAsync(Guid boardId, Guid topicId, [FromQuery] MessagesParams messagesParams)
         {
-            PagedList<Topic> topics = await _messageService.
+            PagedList<Message> messages = await _messageService.GetMessagesAsync(boardId, topicId, messagesParams);
+
+            if (messages == null)
+            {
+                return NotFound();
+            }
+
+            var previousPageLink = messages.HasPrevious ? CreateMessageResourceUri(messagesParams, UriTypeEnum.PreviousPage) : null;
+            var nextPageLink = messages.HasNext ? CreateMessageResourceUri(messagesParams, UriTypeEnum.NextPage) : null;
+
+            var paginationMetaData = new
+            {
+                totalCount = messages.TotalCount,
+                pageSize = messages.PageSize,
+                currentPage = messages.CurrentPage,
+                totalPages = messages.TotalPages,
+                previousPageLink,
+                nextPageLink
+            };
+
+            var paginationMetaDataJson = JsonSerializer.Serialize(paginationMetaData);
+
+            Response.Headers.Add("X-Pagination", paginationMetaDataJson);
+
+            var responseDtos = _mapper.Map<IEnumerable<ResponseMessageDto>>(messages);
+
+            var links = CreatemessagesLinks(messagesParams, messages.HasPrevious, messages.HasNext);
+
+            //foreach (var item in responseDtos)
+            //{
+            //    item.Links = links;
+            //}
+
+            return Ok(responseDtos);
         }
 
         [HttpPost(Name = "CreateMessage")]
@@ -66,7 +101,7 @@ namespace RestWallAPI.Controllers
             return Ok();
         }
 
-        private string CreateMessageResourceUri(MessagesParams topicsParams, UriTypeEnum uriType)
+        private string CreateMessageResourceUri(MessagesParams messagesParams, UriTypeEnum uriType)
         {
             switch (uriType)
             {
@@ -74,16 +109,16 @@ namespace RestWallAPI.Controllers
                     return Url.Link("GetMessages",
                         new
                         {
-                            pageNumber = topicsParams.PageNumber - 1,
-                            pageSize = topicsParams.PageSize
+                            pageNumber = messagesParams.PageNumber - 1,
+                            pageSize = messagesParams.PageSize
 
                         });
                 case UriTypeEnum.NextPage:
                     return Url.Link("GetMessages",
                         new
                         {
-                            pageNumber = topicsParams.PageNumber + 1,
-                            pageSize = topicsParams.PageSize
+                            pageNumber = messagesParams.PageNumber + 1,
+                            pageSize = messagesParams.PageSize
 
                         });
                 case UriTypeEnum.Current:
@@ -91,8 +126,8 @@ namespace RestWallAPI.Controllers
                     return Url.Link("GetMessages",
                         new
                         {
-                            pageNumber = topicsParams.PageNumber,
-                            pageSize = topicsParams.PageSize
+                            pageNumber = messagesParams.PageNumber,
+                            pageSize = messagesParams.PageSize
 
                         });
             }
@@ -111,7 +146,7 @@ namespace RestWallAPI.Controllers
             links.Add(
                 new LinkDto(
                     Url.Link("GetMessages", new { boardId, topicId, messageId }),
-                    "topics",
+                    "messages",
                     "GET"));
 
             links.Add(
@@ -135,7 +170,7 @@ namespace RestWallAPI.Controllers
             return links;
         }
 
-        private IEnumerable<LinkDto> CreateTopicsLinks(MessagesParams messagesParams, bool hasPrevious, bool hasNext)
+        private IEnumerable<LinkDto> CreatemessagesLinks(MessagesParams messagesParams, bool hasPrevious, bool hasNext)
         {
             var links = new List<LinkDto>();
 

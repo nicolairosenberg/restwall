@@ -10,5 +10,6 @@ namespace RestLib.Infrastructure.Models.V1.Messages
         public string Text { get; set; }
         public Guid UserId { get; set; }
         public DateTime CreatedOn { get; set; }
+
     }
 }

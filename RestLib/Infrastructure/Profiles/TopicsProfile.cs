@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using RestLib.Infrastructure.Entities;
-using RestLib.Infrastructure.Helpers;
-using RestLib.Infrastructure.Models.V1;
 using RestLib.Infrastructure.Models.V1.Topics;
 using System;
 
@@ -18,7 +16,7 @@ namespace RestLib.Infrastructure.Profiles
             CreateMap<RequestTopicDto, Topic>()
                 .ForMember(dest => dest.Messages, opt => opt.MapFrom(src => src.Messages));//.ReverseMap();
 
-            CreateMap<UpdateMessageDto, Topic>();
+            CreateMap<UpdateTopicDto, Topic>();
 
             //CreateMap<PagedList<Topic>, PagedList<ResponseTopicDto>>();
         }

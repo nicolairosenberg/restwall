@@ -12,5 +12,6 @@ namespace RestLib.Infrastructure.Repositories.Interfaces
         Task<IQueryable<Message>> GetMessagesAsync();
         Task<Message> UpdateMessageAsync(Message message);
         Task<Message> DeleteMessageAsync(Message message);
+        Task<bool> ExistsAsync(Guid messageId);
     }
 }

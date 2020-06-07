@@ -59,10 +59,10 @@ namespace RestWallAPI.Controllers
 
             var links = CreateTopicsLinks(topicsParams, topics.HasPrevious, topics.HasNext);
 
-            foreach (var item in responseDtos)
-            {
-                item.Links = links;
-            }
+            //foreach (var item in responseDtos)
+            //{
+            //    item.Links = links;
+            //}
 
             return Ok(responseDtos);
         }
@@ -80,7 +80,7 @@ namespace RestWallAPI.Controllers
 
             var links = CreateTopicLinks(boardId, topicId);
 
-            topicDto.Links = links;
+            //topicDto.Links = links;
 
             return Ok(topicDto);
         }
@@ -92,7 +92,7 @@ namespace RestWallAPI.Controllers
 
             var links = CreateTopicLinks(boardId, responseDto.Id);
 
-            responseDto.Links = links;
+            //responseDto.Links = links;
 
             return CreatedAtRoute("GetTopic", new { boardId = responseDto.BoardId, topicId = responseDto.Id }, responseDto);
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RestLib.Infrastructure.Models.V1.Topics
 {
-    public class ResponseTopicDto
+    public class ResponseTopicLinksDto
     {
         public Guid Id { get; set; }
         public Guid BoardId { get; set; }
@@ -12,5 +12,6 @@ namespace RestLib.Infrastructure.Models.V1.Topics
         public Guid UserId { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime LastActivityOn { get; set; }
+        public IEnumerable<LinkDto> Links { get; set; }
     }
 }

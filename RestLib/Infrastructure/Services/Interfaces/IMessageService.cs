@@ -8,11 +8,11 @@ namespace RestLib.Infrastructure.Services.Interfaces
 {
     public interface IMessageService
     {
-        Task<PagedList<Message>> GetMessagesAsync(Guid boardId, MessagesParams MessagesParams);
-        Task<ResponseMessageDto> GetMessageAsync(Guid boardId, Guid MessageId);
-        Task<ResponseMessageDto> CreateMessageAsync(Guid boardId, RequestMessageDto Message);
-        Task<ResponseMessageDto> UpdateMessageAsync(Guid boardId, Guid MessageId, UpdateMessageDto Message);
-        Task<ResponseMessageDto> DeleteMessageAsync(Guid boardId, ResponseMessageDto Message);
-        Task<bool> MessageExistsAsync(Guid MessageId);
+        Task<PagedList<Message>> GetMessagesAsync(Guid boardId, Guid topicId, MessagesParams messagesParams);
+        Task<ResponseMessageDto> GetMessageAsync(Guid boardId, Guid topicId, Guid messageId);
+        Task<ResponseMessageDto> CreateMessageAsync(Guid boardId, Guid topicId, RequestMessageDto message);
+        Task<ResponseMessageDto> UpdateMessageAsync(Guid boardId, Guid topicId, Guid mssageId, UpdateMessageDto message);
+        Task<ResponseMessageDto> DeleteMessageAsync(Guid boardId, Guid topicId, ResponseMessageDto message);
+        Task<bool> MessageExistsAsync(Guid messageId);
     }
 }
