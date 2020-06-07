@@ -32,6 +32,8 @@ namespace RestWallAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // NR: tried to use ETag generator to be able to improve on caching, but had to revert due to issues.. :/
+
             services.AddResponseCaching();
 
             services
