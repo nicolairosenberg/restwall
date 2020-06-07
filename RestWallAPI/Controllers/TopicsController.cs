@@ -16,6 +16,7 @@ namespace RestWallAPI.Controllers
 
     [ApiController]
     [Route("api/boards/{boardId}/topics")]
+    [ResponseCache(CacheProfileName = "360SecondsCacheProfile")]
     public class TopicsController : ControllerBase
     {
         private readonly ITopicService _topicService;

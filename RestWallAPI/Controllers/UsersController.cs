@@ -8,6 +8,7 @@ namespace RestWallAPI.Controllers
 
     [ApiController]
     [Route("users")]
+    [ResponseCache(CacheProfileName = "360SecondsCacheProfile")]
     public class UsersController : ControllerBase
     {
         public UsersController()

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
 using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
 using RestLib.Infrastructure.Models.V1.Boards;
@@ -16,6 +14,7 @@ namespace RestWallAPI.Controllers
 {
     [ApiController]
     [Route("api/boards")]
+    [ResponseCache(CacheProfileName = "360SecondsCacheProfile")]
     public class BoardsControllers : ControllerBase
     {
         private readonly IBoardService _boardService;

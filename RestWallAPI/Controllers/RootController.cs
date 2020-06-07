@@ -4,8 +4,9 @@ using RestLib.Infrastructure.Models.V1;
 
 namespace RestWallAPI.Controllers
 {
-    [Route("api")]
     [ApiController]
+    [Route("api")]
+    [ResponseCache(CacheProfileName = "360SecondsCacheProfile")]
     public class RootController : ControllerBase
     {
         [HttpGet(Name = "GetRoot")]

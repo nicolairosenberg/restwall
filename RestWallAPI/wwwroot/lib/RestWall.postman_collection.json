@@ -1,0 +1,724 @@
+{
+	"info": {
+		"_postman_id": "6474c57e-bb80-4956-ad33-1282a70ec535",
+		"name": "RestWall",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Options",
+			"item": [
+				{
+					"name": "GetTopic Options",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBoard Options",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/boards",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"boards"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Create Message",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"guid\": \"20000000-0000-0000-0000-000000000000\",\r\n    \"title\": \"Sgu da meget sjovt.\",\r\n    \"text\": null,\r\n    \"userId\": 0,\r\n    \"user\": null,\r\n    \"createdOn\": \"0001-01-01T00:00:00\",\r\n    \"updatedOn\": null,\r\n    \"deletedOn\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44366/message/6132846a-9f7b-4bcf-974a-95edb5db31e6",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"message",
+						"6132846a-9f7b-4bcf-974a-95edb5db31e6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Message",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"guid\": \"20000000-0000-0000-0000-000000000000\",\r\n    \"title\": \"Sgu da meget sjovt.\",\r\n    \"text\": null,\r\n    \"userId\": 0,\r\n    \"user\": null,\r\n    \"createdOn\": \"0001-01-01T00:00:00\",\r\n    \"updatedOn\": null,\r\n    \"deletedOn\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44366/messages/6132846a-9f7b-4bcf-974a-95edb5db31e6",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"messages",
+						"6132846a-9f7b-4bcf-974a-95edb5db31e6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Boards",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/boards",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Board",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Topics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Topic",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"First Greeting from Planet Earth\",\r\n    \"text\": \"This is another topic that i think we might have to see.\",\r\n    \"userId\": \"4b7d9e48-4897-43f5-8269-58d5b2389893\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Topic with Messages",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"First Greeting from Planet Earth\",\n    \"text\": \"This is another topic that i think we might have to see.\",\n    \"userId\": \"4b7d9e48-4897-43f5-8269-58d5b2389893\",\n    \"messages\": [\n        {\n            \"title\": \"This is my first message\",\n            \"text\": \"This is my first real text message on the board\"\n        },\n        {\n            \"title\": \"Hello there\",\n            \"text\": \"Test on a second message for the topic\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Topic",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics/5f7d9e48-4897-43f5-8269-58d5b2389893",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics",
+						"5f7d9e48-4897-43f5-8269-58d5b2389893"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Messages for Topic",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics/bbf8f476-28bf-400c-963b-ff2a6f3a192c/messages",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics",
+						"bbf8f476-28bf-400c-963b-ff2a6f3a192c",
+						"messages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Topic on Board",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics/bbf8f476-28bf-400c-963b-ff2a6f3a192c",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics",
+						"bbf8f476-28bf-400c-963b-ff2a6f3a192c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Topic as XML",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<RequestTopicDto>\n    <Title>First Greeting from Planet Earth</Title>\n    <Text>This is another topic that i think we might have to see.</Text>\n    <UserId>4b7d9e48-4897-43f5-8269-58d5b2389893</UserId>\n</RequestTopicDto>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Topic [Test of] Error Validation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"First Greeting from Planet Earth\",\r\n    \"text\": \"This is another topic that i think we might have to see.\",\r\n    \"userId\": \"4b7d9e48-4897-43f5-8269-58d5b2389893\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Topic [Custom error message] Error Validation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \".\",\r\n    \"text\": null,\r\n    \"userId\": \"4b7d9e48-4897-43f5-8269-58d5b2389893\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Topic [Custom error message] Error Validation with ProblemDetails",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": null,\r\n    \"text\": \".\",\r\n    \"userId\": \"4b7d9e48-4897-43f5-8269-58d5b2389893\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Topic [Custom error message] return 400 without Body",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": null,\r\n    \"text\": \".\",\r\n    \"userId\": \"4b7d9e48-4897-43f5-8269-58d5b2389893\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Topic on Board",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics/bbf8f476-28bf-400c-963b-ff2a6f3a192c",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics",
+						"bbf8f476-28bf-400c-963b-ff2a6f3a192c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Topics with PageSize and PageNumber",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics?pageNumber=4&pageSize=5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "4"
+						},
+						{
+							"key": "pageSize",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Topics with PageSize and PageNumber with Error",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics?pageNumber=2&pageSize=",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4",
+						"topics"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "2"
+						},
+						{
+							"key": "pageSize",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Root",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Showing Media Types supported",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.restwall.hateoas+json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"boards",
+						"35df166a-1dca-4697-91f8-afe6499c16f4"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -32,20 +32,26 @@ namespace RestWallAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddResponseCaching();
+
             services
             .AddControllersWithViews(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
+                options.CacheProfiles.Add("360SecondsCacheProfile",
+                        new CacheProfile() { Duration = 360 }
+                    );
 
             })
             .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
             .AddXmlDataContractSerializerFormatters()
-            .ConfigureApiBehaviorOptions(setupAction =>
+            .ConfigureApiBehaviorOptions(options =>
             {
+                
                 // NR: I want to follow standards on showing correct and detailed information of validation errors.
                 // Sidenote: this approach is harder to unit test, could be easier with fluent validation, from Jeremy Skinner @ github.
 
-                setupAction.InvalidModelStateResponseFactory = context =>
+                options.InvalidModelStateResponseFactory = context =>
                 {
                     var problemDetailsFactory = context.HttpContext.RequestServices
                         .GetRequiredService<ProblemDetailsFactory>();
@@ -128,6 +134,8 @@ namespace RestWallAPI
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
+
+            app.UseResponseCaching();
 
             app.UseRouting();
 
