@@ -124,6 +124,8 @@ namespace RestWallAPI.Controllers
                 return Ok(boardWithLinks);
             }
 
+            // NR: Letting this stay for explaination:
+
             //var primaryMediaType = includeLinks ?
             //    parsedMediaType.SubTypeWithoutSuffix.Substring(0, parsedMediaType.SubTypeWithoutSuffix.Length - 8)
             //    : parsedMediaType.SubTypeWithoutSuffix;

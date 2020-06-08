@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
@@ -33,6 +34,11 @@ namespace RestWallAPI.Controllers
         //[Produces("application/json", "application/xml", "application/vnd.restwall.hateoas+json")]
         public async Task<ActionResult<IEnumerable<ResponseTopicDto>>> GetTopicsAsync(Guid boardId, [FromQuery] TopicsParams topicsParams, [FromHeader(Name = "Accept")] string mediaType)
         {
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
+
             PagedList<Topic> topics = await _topicService.GetTopicsAsync(boardId, topicsParams);
 
             if (topics == null)
@@ -57,14 +63,30 @@ namespace RestWallAPI.Controllers
 
             Response.Headers.Add("X-Pagination", paginationMetaDataJson);
 
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
+
+            if (includeLinks)
+            {
+                var topicsWithLinks = new List<ResponseTopicLinksDto>();
+
+                foreach (var item in topics)
+                {
+                    IEnumerable<LinkDto> links = new List<LinkDto>();
+                    links = CreateTopicLinks(item.BoardId, item.Id);
+                    var topicWithLinks = _mapper.Map<ResponseTopicLinksDto>(item);
+                    topicWithLinks.Links = links;
+
+                    topicsWithLinks.Add(topicWithLinks);
+                }
+
+                var envelopeWithLinks = new EnvelopeResponseTopicLinksDto();
+                envelopeWithLinks.Value = topicsWithLinks;
+                envelopeWithLinks.Links = CreateTopicsLinks(topicsParams, topics.HasPrevious, topics.HasNext);
+
+                return Ok(envelopeWithLinks);
+            }
+
             var responseDtos = _mapper.Map<IEnumerable<ResponseTopicDto>>(topics);
-
-            var links = CreateTopicsLinks(topicsParams, topics.HasPrevious, topics.HasNext);
-
-            //foreach (var item in responseDtos)
-            //{
-            //    item.Links = links;
-            //}
 
             return Ok(responseDtos);
         }
@@ -74,6 +96,11 @@ namespace RestWallAPI.Controllers
         //[Produces("application/json", "application/xml", "application/vnd.restwall.hateoas+json")]
         public async Task<ActionResult<ResponseTopicDto>> GetTopicAsync(Guid boardId, Guid topicId, [FromHeader(Name = "Accept")] string mediaType)
         {
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
+
             var topicDto = await _topicService.GetTopicAsync(boardId, topicId);
 
             if (topicDto == null)
@@ -81,56 +108,123 @@ namespace RestWallAPI.Controllers
                 return NotFound();
             }
 
-            var links = CreateTopicLinks(boardId, topicId);
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
 
-            //topicDto.Links = links;
+            if (includeLinks)
+            {
+                IEnumerable<LinkDto> links = new List<LinkDto>();
+                links = CreateTopicLinks(topicDto.BoardId, topicDto.Id);
+                var topicWithLinks = _mapper.Map<ResponseTopicLinksDto>(topicDto);
+                topicWithLinks.Links = links;
+
+                return Ok(topicWithLinks);
+            }
 
             return Ok(topicDto);
         }
 
         [HttpPost(Name = "CreateTopic")]
-        
+
         public async Task<ActionResult<ResponseTopicDto>> CreateTopicAsync(Guid boardId, [FromBody] RequestTopicDto topic, [FromHeader(Name = "Accept")] string mediaType)
         {
-            var responseDto = await _topicService.CreateTopicAsync(boardId, topic);
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
 
-            var links = CreateTopicLinks(boardId, responseDto.Id);
+            var topicDto = await _topicService.CreateTopicAsync(boardId, topic);
 
-            //responseDto.Links = links;
+            if (topicDto == null)
+            {
+                return NotFound();
+            }
 
-            return CreatedAtRoute("GetTopic", new { boardId = responseDto.BoardId, topicId = responseDto.Id }, responseDto);
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
+
+            if (includeLinks)
+            {
+                IEnumerable<LinkDto> links = new List<LinkDto>();
+                links = CreateTopicLinks(topicDto.BoardId, topicDto.Id);
+                var topicWithLinks = _mapper.Map<ResponseTopicLinksDto>(topicDto);
+                topicWithLinks.Links = links;
+
+                return Ok(topicWithLinks);
+            }
+
+            return CreatedAtRoute("GetTopic", new { boardId = topicDto.BoardId, topicId = topicDto.Id }, topicDto);
         }
 
         [HttpPut("{topicId}", Name = "UpdateTopic")]
         //[Produces("application/json", "application/xml", "application/vnd.restwall.hateoas+json")]
         public async Task<ActionResult<ResponseTopicDto>> UpdateTopicAsync(Guid boardId, Guid topicId, [FromBody] UpdateTopicDto topic, [FromHeader(Name = "Accept")] string mediaType)
         {
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
+
             if (!await _topicService.TopicExistsAsync(topicId))
             {
                 return NotFound();
             }
 
-            var updatedDto = await _topicService.UpdateTopicAsync(boardId, topicId, topic);
+            var topicDto = await _topicService.UpdateTopicAsync(boardId, topicId, topic);
 
-            return Ok(updatedDto);
+            if (topicDto == null)
+            {
+                return NotFound();
+            }
+
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
+
+            if (includeLinks)
+            {
+                IEnumerable<LinkDto> links = new List<LinkDto>();
+                links = CreateTopicLinks(topicDto.BoardId, topicDto.Id);
+                var topicWithLinks = _mapper.Map<ResponseTopicLinksDto>(topicDto);
+                topicWithLinks.Links = links;
+
+                return Ok(topicWithLinks);
+            }
+
+            return Ok(topicDto);
         }
 
         [HttpDelete("{topicId}", Name = "DeleteTopic")]
         public async Task<ActionResult<ResponseTopicDto>> DeleteTopicAsync(Guid boardId, Guid topicId, [FromHeader(Name = "Accept")] string mediaType)
         {
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
+
             if (!await _topicService.TopicExistsAsync(topicId))
             {
                 return NotFound();
             }
 
-            var topic = await _topicService.GetTopicAsync(boardId, topicId);
+            var topicDto = await _topicService.GetTopicAsync(boardId, topicId);
 
-            if (topic == null)
+            if (topicDto == null)
             {
                 return NoContent();
             }
 
-            return await _topicService.DeleteTopicAsync(boardId, topic);
+            var deletedTopicDto = await _topicService.DeleteTopicAsync(boardId, topicDto);
+
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
+
+            if (includeLinks)
+            {
+                IEnumerable<LinkDto> links = new List<LinkDto>();
+                links = CreateTopicLinks(deletedTopicDto.BoardId, deletedTopicDto.Id);
+                var topicWithLinks = _mapper.Map<ResponseTopicLinksDto>(deletedTopicDto);
+                topicWithLinks.Links = links;
+
+                return Ok(topicWithLinks);
+            }
+
+            return Ok(deletedTopicDto);
         }
 
         [HttpOptions]
