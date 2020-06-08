@@ -110,10 +110,12 @@ namespace RestWallAPI
             services.AddTransient<IBoardService, BoardService>();
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddTransient<IBoardRepository, BoardRepository>();
             services.AddTransient<ITopicRepository, TopicRepository>();
             services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
 
         }

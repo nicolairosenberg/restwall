@@ -5,7 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace RestTests.UnitTests
+namespace RestTests.UnitTests.Controllers
 {
     public class MessageTests
     {

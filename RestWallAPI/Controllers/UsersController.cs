@@ -294,7 +294,7 @@ namespace RestWallAPI.Controllers
 
             links.Add(
                 new LinkDto(
-                    Url.Link("GetUsers", new { userId }),
+                    Url.Link("GetUsers", new { }),
                     "users",
                     "GET"));
 
@@ -306,7 +306,7 @@ namespace RestWallAPI.Controllers
 
             links.Add(
                 new LinkDto(
-                    Url.Link("CreateUser", new { userId }),
+                    Url.Link("CreateUser", new { }),
                     "create_user",
                     "POST"));
 

@@ -11,7 +11,10 @@ You should be able to run the application without more requirements.
 
 2) Testing endpoints with Postman
 
+See solution items for postman collection
 Note: Please click caching and ssl certificate validator OFF in Postman settings..
 
 
 3) Running with Docker 
+
+The solution contains a docker file from project creation.
