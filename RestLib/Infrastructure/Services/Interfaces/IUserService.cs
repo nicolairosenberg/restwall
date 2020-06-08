@@ -8,11 +8,11 @@ namespace RestLib.Infrastructure.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<PagedList<User>> GetUsersAsync(Guid boardId, Guid topicId, UsersParams usersParams);
-        Task<ResponseUserDto> GetUserAsync(Guid boardId, Guid topicId, Guid userId);
-        Task<ResponseUserDto> CreateUserAsync(Guid boardId, Guid topicId, RequestUserDto user);
-        Task<ResponseUserDto> UpdateUserAsync(Guid boardId, Guid topicId, Guid userId, UpdateUserDto user);
-        Task<ResponseUserDto> DeleteUserAsync(Guid boardId, Guid topicId, ResponseUserDto user);
+        Task<PagedList<User>> GetUsersAsync(UsersParams usersParams);
+        Task<ResponseUserDto> GetUserAsync(Guid userId);
+        Task<ResponseUserDto> CreateUserAsync(RequestUserDto user);
+        Task<ResponseUserDto> UpdateUserAsync(Guid userId, UpdateUserDto user);
+        Task<ResponseUserDto> DeleteUserAsync(ResponseUserDto user);
         Task<bool> UserExistsAsync(Guid userId);
     }
 }

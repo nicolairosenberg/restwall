@@ -18,7 +18,7 @@ namespace RestLib.Infrastructure.Services
             _userRepository = userRepository;
             _mapper = mapper;
         }
-        public async Task<ResponseUserDto> CreateUserAsync(Guid boardId, Guid topicId, RequestUserDto user)
+        public async Task<ResponseUserDto> CreateUserAsync(RequestUserDto user)
         {
             var userEntity = _mapper.Map<User>(user);
             userEntity.Id = Guid.NewGuid();
@@ -29,7 +29,7 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<ResponseUserDto> DeleteUserAsync(Guid boardId, Guid topicId, ResponseUserDto user)
+        public async Task<ResponseUserDto> DeleteUserAsync(ResponseUserDto user)
         {
             var existingTopic = await _userRepository.GetUserAsync(user.Id);
 
@@ -40,7 +40,7 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<ResponseUserDto> GetUserAsync(Guid boardId, Guid topicId, Guid userId)
+        public async Task<ResponseUserDto> GetUserAsync(Guid userId)
         {
             var user = await _userRepository.GetUserAsync(userId);
 
@@ -53,7 +53,7 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<PagedList<User>> GetUsersAsync(Guid boardId, Guid topicId, UsersParams usersParams)
+        public async Task<PagedList<User>> GetUsersAsync(UsersParams usersParams)
         {
             var collection = await _userRepository.GetUsersAsync();
 
@@ -62,7 +62,7 @@ namespace RestLib.Infrastructure.Services
             return pagedList;
         }
 
-        public async Task<ResponseUserDto> UpdateUserAsync(Guid boardId, Guid topicId, Guid userId, UpdateUserDto user)
+        public async Task<ResponseUserDto> UpdateUserAsync(Guid userId, UpdateUserDto user)
         {
             var existingTopic = await _userRepository.GetUserAsync(userId);
 

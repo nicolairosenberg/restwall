@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Helpers;
 using RestLib.Infrastructure.Models.V1;
@@ -16,6 +17,7 @@ namespace RestWallAPI.Controllers
     [ApiController]
     [Route("api/boards/{boardId}/topics/{topicId}/messages")]
     [ResponseCache(CacheProfileName = "0SecondsCacheProfile")]
+    [Produces("application/json", "application/xml", "application/vnd.restwall.hateoas+json")]
     public class MessagesController : ControllerBase
     {
         private readonly ILogger<MessagesController> _logger;
@@ -30,8 +32,13 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpGet(Name = "GetMessages")]
-        public async Task<IActionResult> GetMessagesAsync(Guid boardId, Guid topicId, [FromQuery] MessagesParams messagesParams)
+        public async Task<IActionResult> GetMessagesAsync(Guid boardId, Guid topicId, [FromQuery] MessagesParams messagesParams, [FromHeader(Name = "Accept")] string mediaType)
         {
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
+
             PagedList<Message> messages = await _messageService.GetMessagesAsync(boardId, topicId, messagesParams);
 
             if (messages == null)
@@ -56,42 +63,159 @@ namespace RestWallAPI.Controllers
 
             Response.Headers.Add("X-Pagination", paginationMetaDataJson);
 
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
+
+            if (includeLinks)
+            {
+                var messagesWithLinks = new List<ResponseMessageLinksDto>();
+
+                foreach (var item in messages)
+                {
+                    IEnumerable<LinkDto> links = new List<LinkDto>();
+                    links = CreateMessageLinks(boardId, item.TopicId, item.Id);
+                    var messageWithLinks = _mapper.Map<ResponseMessageLinksDto>(item);
+                    messageWithLinks.Links = links;
+
+                    messagesWithLinks.Add(messageWithLinks);
+                }
+
+                var envelopeWithLinks = new EnvelopeResponseMessageLinksDto();
+                envelopeWithLinks.Value = messagesWithLinks;
+                envelopeWithLinks.Links = CreateMessagesLinks(messagesParams, messages.HasPrevious, messages.HasNext);
+
+                return Ok(envelopeWithLinks);
+            }
+
             var responseDtos = _mapper.Map<IEnumerable<ResponseMessageDto>>(messages);
-
-            var links = CreatemessagesLinks(messagesParams, messages.HasPrevious, messages.HasNext);
-
-            //foreach (var item in responseDtos)
-            //{
-            //    item.Links = links;
-            //}
 
             return Ok(responseDtos);
         }
 
-        [HttpPost(Name = "CreateMessage")]
-        public async Task<IActionResult> CreateMessageAsync(Guid boardId, Guid topicId, [FromBody] Message message)
-        {
-            return null;
-
-            // createdAtRoute GetTopicAsync
-        }
-
         [HttpGet("{messageId}", Name = "GetMessage")]
-        public async Task<IActionResult> GetMessageAsync(Guid boardId, Guid topicId, Guid messageId)
+        public async Task<IActionResult> GetMessageAsync(Guid boardId, Guid topicId, Guid messageId, [FromHeader(Name = "Accept")] string mediaType)
         {
-            return null;
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
+
+            var messageDto = await _messageService.GetMessageAsync(boardId, topicId, messageId);
+
+            if (messageDto == null)
+            {
+                return NotFound();
+            }
+
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
+
+            if (includeLinks)
+            {
+                IEnumerable<LinkDto> links = new List<LinkDto>();
+                links = CreateMessageLinks(boardId, topicId, messageDto.Id);
+                var messageWithLinks = _mapper.Map<ResponseMessageLinksDto>(messageDto);
+                messageWithLinks.Links = links;
+
+                return Ok(messageWithLinks);
+            }
+
+            return Ok(messageDto);
+        }
+        
+        [HttpPost(Name = "CreateMessage")]
+        public async Task<IActionResult> CreateMessageAsync(Guid boardId, Guid topicId, [FromBody] RequestMessageDto message, [FromHeader(Name = "Accept")] string mediaType)
+        {
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
+
+            var messageDto = await _messageService.CreateMessageAsync(boardId, topicId, message);
+
+            if (messageDto == null)
+            {
+                return NotFound();
+            }
+
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
+
+            if (includeLinks)
+            {
+                IEnumerable<LinkDto> links = new List<LinkDto>();
+                links = CreateMessageLinks(boardId, topicId, messageDto.Id);
+                var messageWithLinks = _mapper.Map<ResponseMessageLinksDto>(messageDto);
+                messageWithLinks.Links = links;
+
+                return Ok(messageWithLinks);
+            }
+
+            return CreatedAtRoute("GetMessage", new { boardId, topicId, messageId = messageDto.Id }, messageDto);
         }
 
         [HttpPut("{messageId}", Name = "UpdateMessage")]
-        public async Task<IActionResult> UpdateMessageAsync(Guid boardId, Guid topicId, Guid messageId, [FromBody] Message message)
+        public async Task<IActionResult> UpdateMessageAsync(Guid boardId, Guid topicId, Guid messageId, [FromBody] UpdateMessageDto message, [FromHeader(Name = "Accept")] string mediaType)
         {
-            return null;
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
+
+            var messageDto = await _messageService.UpdateMessageAsync(boardId, topicId, messageId, message);
+
+            if (messageDto == null)
+            {
+                return NotFound();
+            }
+
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
+
+            if (includeLinks)
+            {
+                IEnumerable<LinkDto> links = new List<LinkDto>();
+                links = CreateMessageLinks(boardId, topicId, messageDto.Id);
+                var messageWithLinks = _mapper.Map<ResponseMessageLinksDto>(messageDto);
+                messageWithLinks.Links = links;
+
+                return Ok(messageWithLinks);
+            }
+
+            return Ok(messageDto);
         }
 
         [HttpDelete("{messageId}", Name = "DeleteMessage")]
-        public async Task<IActionResult> DeleteMessageAsync(Guid boardId, Guid topicId, Guid messageId, [FromBody] Message message)
+        public async Task<IActionResult> DeleteMessageAsync(Guid boardId, Guid topicId, Guid messageId, [FromHeader(Name = "Accept")] string mediaType)
         {
-            return null;
+            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            {
+                return BadRequest();
+            }
+
+            if (!await _messageService.MessageExistsAsync(topicId))
+            {
+                return NotFound();
+            }
+
+            var messageDto = await _messageService.GetMessageAsync(boardId, topicId, messageId);
+
+            if (messageDto == null)
+            {
+                return NoContent();
+            }
+
+            var deletedTopicDto = await _messageService.DeleteMessageAsync(boardId, topicId, messageDto);
+
+            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
+
+            if (includeLinks)
+            {
+                IEnumerable<LinkDto> links = new List<LinkDto>();
+                links = CreateMessageLinks(boardId, deletedTopicDto.TopicId, deletedTopicDto.Id);
+                var messageWithLinks = _mapper.Map<ResponseMessageLinksDto>(deletedTopicDto);
+                messageWithLinks.Links = links;
+
+                return Ok(messageWithLinks);
+            }
+
+            return Ok(deletedTopicDto);
         }
 
         [HttpOptions]
@@ -170,7 +294,7 @@ namespace RestWallAPI.Controllers
             return links;
         }
 
-        private IEnumerable<LinkDto> CreatemessagesLinks(MessagesParams messagesParams, bool hasPrevious, bool hasNext)
+        private IEnumerable<LinkDto> CreateMessagesLinks(MessagesParams messagesParams, bool hasPrevious, bool hasNext)
         {
             var links = new List<LinkDto>();
 
