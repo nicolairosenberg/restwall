@@ -1,0 +1,805 @@
+{
+	"info": {
+		"_postman_id": "6474c57e-bb80-4956-ad33-1282a70ec535",
+		"name": "RestWall",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Options",
+			"item": [
+				{
+					"name": "Topics Options",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Boards Options",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44366/api/boards",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users Options",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44366/api/users",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Messages Options",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics/5f7d9e48-4897-43f5-8269-58d5b2389893/messages",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics",
+								"5f7d9e48-4897-43f5-8269-58d5b2389893",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Boards",
+			"item": [
+				{
+					"name": "Get Boards",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44366/api/boards",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Boards with Links",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.restwall.hateoas+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44366/api/boards",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Board",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.restwall.hateoas+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Board with Links",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.restwall.hateoas+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Topics",
+			"item": [
+				{
+					"name": "Get Topics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics/5f7d9e48-4897-43f5-8269-58d5b2389893/messages",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics",
+								"5f7d9e48-4897-43f5-8269-58d5b2389893",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Topic",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"First Greeting from Planet Earth5\",\r\n    \"text\": \"This is another topic that i think we might have to see.5\",\r\n    \"userId\": \"4b7d9e48-4897-43f5-8269-58d5b2389893\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Topic [Test of] Error Validation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \".\",\r\n    \"text\": null,\r\n    \"userId\": \"4b7d9e48-4897-43f5-8269-58d5b2389893\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Topic [Custom error message] Error Validation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": null,\r\n    \"text\": \".\",\r\n    \"userId\": \"4b7d9e48-4897-43f5-8269-58d5b2389893\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Topic [Custom error message] Error Validation with ProblemDetails",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": null,\r\n    \"text\": \".\",\r\n    \"userId\": \"4b7d9e48-4897-43f5-8269-58d5b2389893\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Topic [Custom error message] return 400 without Body",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Topics with PageSize and PageNumber",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics?pageNumber=4&pageSize=5",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "4"
+								},
+								{
+									"key": "pageSize",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Topics with PageSize and PageNumber with Error",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics?pageNumber=2&pageSize=",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "2"
+								},
+								{
+									"key": "pageSize",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Topic with Messages",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"First Greeting from Planet Earth\",\n    \"text\": \"This is another topic that i think we might have to see.\",\n    \"userId\": \"4b7d9e48-4897-43f5-8269-58d5b2389893\",\n    \"messages\": [\n        {\n            \"title\": \"This is my first message\",\n            \"text\": \"This is my first real text message on the board\"\n        },\n        {\n            \"title\": \"Hello there\",\n            \"text\": \"Test on a second message for the topic\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Topic",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics/5f7d9e48-4897-43f5-8269-58d5b2389893",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics",
+								"5f7d9e48-4897-43f5-8269-58d5b2389893"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Topic on Board",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"A proper Greeting 2\",\r\n    \"text\": \"Please introduce yourselves. 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics/5f7d9e48-4897-43f5-8269-58d5b2389893",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics",
+								"5f7d9e48-4897-43f5-8269-58d5b2389893"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Get Messages for Topic",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44366/api/boards/35df166a-1dca-4697-91f8-afe6499c16f4/topics/5f7d9e48-4897-43f5-8269-58d5b2389893/messages",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"boards",
+								"35df166a-1dca-4697-91f8-afe6499c16f4",
+								"topics",
+								"5f7d9e48-4897-43f5-8269-58d5b2389893",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:44366/api/users/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users with Links",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.restwall.hateoas+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:44366/api/users",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"username\": \"Nijal\",\r\n        \"email\": \"nicolai.rosenberg@gmail.com\",\r\n        \"avatar\": \"test.png\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:44366/api/users",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "44366",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get Root",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/api",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
