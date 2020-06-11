@@ -9,6 +9,7 @@ namespace RestLib.Infrastructure.Profiles
         public MessagesProfile()
         {
             CreateMap<Message, ResponseMessageDto>();
+            CreateMap<Message, ResponseMessageLinksDto>();
 
             CreateMap<RequestMessageDto, Message>();
 

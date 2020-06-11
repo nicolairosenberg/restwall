@@ -20,7 +20,7 @@ namespace RestWallAPI.Controllers
                 "GET"));
 
             links.Add(
-                new LinkDto(Url.Link("GetBoardsAsync", new { }),
+                new LinkDto(Url.Link("GetBoards", new { }),
                 "boards",
                 "GET"));
 
