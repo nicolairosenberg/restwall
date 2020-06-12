@@ -5,6 +5,7 @@ using RestLib.Infrastructure.Models.V1.Messages;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using RestLib.Infrastructure.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RestLib.Infrastructure.Services
@@ -45,13 +46,12 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<PagedList<Message>> GetMessagesAsync(Guid boardId, Guid topicId, MessagesParams messagesParams)
+        public async Task<ICollection<ResponseMessageDto>> GetMessagesAsync(Guid boardId, Guid topicId)
         {
-            var collection = await _messageRepository.GetMessagesAsync();
+            var collection = await _messageRepository.GetMessagesAsync(topicId);
 
-            var pagedList = PagedList<Message>.Create(collection, messagesParams.PageNumber, messagesParams.PageSize);
-
-            return pagedList;
+            var responseDto = _mapper.Map<ICollection<ResponseMessageDto>>(collection);
+            return responseDto;
         }
 
         public async Task<ResponseMessageDto> UpdateMessageAsync(Guid boardId, Guid topicId, Guid messageId, UpdateMessageDto message)

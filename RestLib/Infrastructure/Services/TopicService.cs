@@ -6,6 +6,7 @@ using RestLib.Infrastructure.Models.V1.Topics;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using RestLib.Infrastructure.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RestLib.Infrastructure.Services
@@ -53,13 +54,13 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<PagedList<Topic>> GetTopicsAsync(Guid boardId, TopicsParams topicsParams)
+        public async Task<ICollection<ResponseTopicDto>> GetTopicsAsync(Guid boardId)
         {
             var collection = await _topicRepository.GetTopicsAsync(boardId);
 
-            var pagedList = PagedList<Topic>.Create(collection, topicsParams.PageNumber, topicsParams.PageSize);
+            var responseDtos = _mapper.Map<ICollection<ResponseTopicDto>>(collection);
 
-            return pagedList;
+            return responseDtos;
         }
 
         public async Task<ResponseTopicDto> UpdateTopicAsync(Guid boardId, Guid topicId, UpdateTopicDto topic)

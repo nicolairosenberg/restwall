@@ -1,7 +1,4 @@
 ﻿using AutoMapper;
-using RestLib.Infrastructure.Entities;
-using RestLib.Infrastructure.Helpers;
-using RestLib.Infrastructure.Models.V1;
 using RestLib.Infrastructure.Models.V1.Boards;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using RestLib.Infrastructure.Services.Interfaces;
@@ -26,23 +23,18 @@ namespace RestLib.Infrastructure.Services
         {
             var board = await _boardRepository.GetBoardAsync(boardId);
 
-            if (board == null)
-            {
-                return null;
-            }
-
             var responseBoard = _mapper.Map<ResponseBoardDto>(board);
 
             return responseBoard;
         }
 
-        public async Task<PagedList<Board>> GetBoardsAsync(BoardsParams boardsParams)
+        public async Task<ICollection<ResponseBoardDto>> GetBoardsAsync()
         {
-            var collection = await _boardRepository.GetBoardsAsync();
+            var boards = await _boardRepository.GetBoardsAsync();
 
-            var pagedList = PagedList<Board>.Create(collection, boardsParams.PageNumber, boardsParams.PageSize);
+            var responseBoards = _mapper.Map<ICollection<ResponseBoardDto>>(boards);
 
-            return pagedList;
+            return responseBoards;
         }
     }
 }

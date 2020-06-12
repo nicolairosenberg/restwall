@@ -2,6 +2,7 @@
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,9 +29,9 @@ namespace RestLib.Infrastructure.Repositories
             return await _dataContext.Users.Where(x => x.Id == userId).SingleOrDefaultAsync();
         }
 
-        public async Task<IQueryable<User>> GetUsersAsync()
+        public async Task<ICollection<User>> GetUsersAsync()
         {
-            return _dataContext.Users as IQueryable<User>;
+            return await _dataContext.Users.ToListAsync();
         }
 
         public async Task<User> UpdateUserAsync(User user)

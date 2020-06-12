@@ -6,7 +6,6 @@ namespace RestWallAPI.Controllers
     {
         public IActionResult Index()
         {
-            //return RedirectToAction("GetRoot", "Root");
             return View();
         }
     }

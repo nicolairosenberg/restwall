@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using RestLib.Infrastructure.Entities;
@@ -53,13 +54,13 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<PagedList<User>> GetUsersAsync(UsersParams usersParams)
+        public async Task<ICollection<ResponseUserDto>> GetUsersAsync()
         {
             var collection = await _userRepository.GetUsersAsync();
 
-            var pagedList = PagedList<User>.Create(collection, usersParams.PageNumber, usersParams.PageSize);
+            var responseDtos = _mapper.Map<ICollection<ResponseUserDto>>(collection);
 
-            return pagedList;
+            return responseDtos;
         }
 
         public async Task<ResponseUserDto> UpdateUserAsync(Guid userId, UpdateUserDto user)

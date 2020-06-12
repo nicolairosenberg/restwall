@@ -2,6 +2,7 @@
 using RestLib.Infrastructure.Entities;
 using RestLib.Infrastructure.Repositories.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,10 +29,9 @@ namespace RestLib.Infrastructure.Repositories
             return await _dataContext.Topics.Where(x => x.Id == topicId).SingleOrDefaultAsync();
         }
 
-        public async Task<IQueryable<Topic>> GetTopicsAsync(Guid boardId)
+        public async Task<ICollection<Topic>> GetTopicsAsync(Guid boardId)
         {
-            // NR: Check later on how to do this async..
-            return _dataContext.Topics as IQueryable<Topic>;
+            return await _dataContext.Topics.Where(x => x.BoardId == boardId).ToListAsync();
         }
 
         public async Task<Topic> UpdateTopicAsync(Topic topic)

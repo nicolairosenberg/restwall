@@ -1,5 +1,6 @@
 ﻿using RestLib.Infrastructure.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace RestLib.Infrastructure.Repositories.Interfaces
     {
         Task<Message> CreateMessageAsync(Message message);
         Task<Message> GetMessageAsync(Guid messageId);
-        Task<IQueryable<Message>> GetMessagesAsync();
+        Task<ICollection<Message>> GetMessagesAsync(Guid topicId);
         Task<Message> UpdateMessageAsync(Message message);
         Task<Message> DeleteMessageAsync(Message message);
         Task<bool> ExistsAsync(Guid messageId);
