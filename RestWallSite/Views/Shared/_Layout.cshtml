@@ -11,17 +11,12 @@
             background-color: #231a13
         }
     </style>
+    @*<link href="~/css/bootstrap.css" rel="stylesheet" />*@
     <link href="~/css/desktop_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" rel="stylesheet" />
     <link href="~/css/discourse-blizzard-themes_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" rel="stylesheet" />
     <link href="~/css/discourse-tooltips_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" rel="stylesheet" />
     <link href="~/css/desktop_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" rel="stylesheet" />
-    @*<link href="./World of Warcraft Forums_files/desktop_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" media="all" rel="stylesheet" data-target="desktop" data-theme-id="1">
-        <link href="./World of Warcraft Forums_files/discourse-blizzard-themes_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" media="all" rel="stylesheet" data-target="discourse-blizzard-themes" data-theme-id="1">*@
-    @*<link href="./World of Warcraft Forums_files/discourse-tooltips_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" media="all" rel="stylesheet" data-target="discourse-tooltips" data-theme-id="1">*@
-
-    @*<link href="./World of Warcraft Forums_files/desktop_theme_1_9b301a43f5378b2a4aa989e1806673b471042eae.css" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="1">*@
-<link href="~/css/navbar-d4dffdc9e7726ac6.css" rel="stylesheet" />
-    @*<link rel="stylesheet" type="text/css" href="./World of Warcraft Forums_files/navbar-d4dffdc9e7726ac6.css">*@
+    <link href="~/css/navbar-d4dffdc9e7726ac6.css" rel="stylesheet" />
     <style>
         #optanon ul#optanon-menu li {
             background-color: !important
@@ -325,6 +320,7 @@
             }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
 </head>
 
 <body class="blizzard blizzard-homepage navigation-categories categories-list docked" data-gr-c-s-loaded="true">
@@ -332,39 +328,20 @@
     <section id="main" class="ember-application">
         <div class="ember-view" id="ember4">
             <div id="main-outlet" class="wrap" role="main">
-                <div class="list-controls">
-                    <div class="container">
-                        <section id="ember27" class="navigation-container ember-view">
-                            <ol id="ember29" class="category-breadcrumb ember-view">
-                                <li id="ember31" class="select-kit single-select combobox combo-box category-drop none ember-view">
-                                    <div data-name="all categories" data-value="" role="button" data-select-kit-id="ember31-header" aria-expanded="false" aria-haspopup="" aria-owns="[data-select-kit-id=ember31-body]" tabindex="0" id="ember32" class="select-kit-header single-select-header combo-box-header category-drop-header ember-view" style="">
-                                        <div data-name="all categories" title="all categories" id="ember33" class="select-kit-selected-name selected-name choice ember-view">
-                                            <span class="name">
-                                                <a href="/">RestWall</a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ol>
-                        </section>
-                    </div>
-                </div>
+                <span class="name" style="font-family: 'MedievalSharp', cursive; text-align:center">
+                    <h2 style="font-size:80px; font-family: 'MedievalSharp', cursive; margin:25px"><a href="/" style="color:darkgoldenrod; border:1px solid #2C241D; padding:25px">RestWall</a></h2>
+                </span>
+               
                 <div class="container list-container ">
                     <div class="row">
                         <div class="full-width">
                             <div id="list-area">
-                                @*<span id="ember48" class="ember-view">
-                                    <a href="/">Back</a>
-                                </span>*@
                                 <div id="ember49" class="contents ember-view">
-
-
 
                                     @RenderBody()
                                     <br /><br />
-
                                     <div>
-                                        <small>Inspired by: <a href="https://eu.forums.blizzard.com/en/wow/">World of Warcraft Forums</a></small>
+                                        <small>In Memory of Oldschool Message Board @*<a href="https://eu.forums.blizzard.com/en/wow/">World of Warcraft Forums</a>*@</small>
                                     </div>
 
                                 </div>
@@ -376,6 +353,6 @@
             </div>
         </div>
     </section>
-
+    @*<script src="~/js/bootstrap.js"></script>*@
 </body>
 </html>

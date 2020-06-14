@@ -7,13 +7,16 @@
 @model BoardViewModel
 
     <div class="category-list">
-        <div class="b-categories-columned" style="width:500px; text-align:center; ">
+        @*<div class="b-categories-columned" style="width:500px; text-align:center; ">
+            
+        </div>*@
+        <div class="b-categories-columned" style="text-align:center; ">
             <a href="/" id="ember127" class="d-link b-category has-description ember-view">
                 <div class="category-information">
                     <h6 class="heading" style="color:darkgoldenrod">Back to Boards</h6>
                 </div>
             </a>
-            <a href="#" id="ember127" class="d-link b-category has-description ember-view">
+            <a id="ember127" class="d-link b-category has-description ember-view" data-toggle="modal" data-target="#createcloud">
                 <div class="category-information">
                     <h6 class="heading" style="color:darkgoldenrod">New Topic</h6>
                 </div>
@@ -46,3 +49,4 @@
         </div>
     }
 }
+
