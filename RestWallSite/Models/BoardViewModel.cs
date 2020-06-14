@@ -7,6 +7,8 @@ namespace RestWallSite.Models
 {
     public class BoardViewModel
     {
+        public ResponseBoardDto CurrentBoard { get; set; }
+        public ResponseTopicDto CurrentTopic { get; set; }
         public ICollection<ResponseBoardDto> Boards { get; set; }
         public ICollection<ResponseTopicDto> Topics { get; set; }
         public ICollection<ResponseMessageDto> Messages { get; set; }

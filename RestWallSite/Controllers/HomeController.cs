@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RestLib.Infrastructure.Models.V1.Boards;
+using RestLib.Infrastructure.Models.V1.Messages;
 using RestLib.Infrastructure.Models.V1.Topics;
 using RestWallSite.Models;
 using ResWallSite.Models;
@@ -15,7 +16,7 @@ namespace ResWallSite.Controllers
 {
     public class HomeController : Controller
     {
-        public HttpClient Client { get; set; } = new HttpClient(); 
+        public HttpClient Client { get; set; } = new HttpClient();
 
         private readonly ILogger<HomeController> _logger;
 
@@ -29,7 +30,7 @@ namespace ResWallSite.Controllers
         {
             BoardViewModel model = new BoardViewModel();
 
-            using(var client = Client)
+            using (var client = Client)
             {
                 var response = await client.GetAsync("boards");
                 if (response.IsSuccessStatusCode)
@@ -46,20 +47,52 @@ namespace ResWallSite.Controllers
             return BadRequest();
         }
 
-        [Route("board/{boardId}")]
+        [Route("boards/{boardId}")]
         public async Task<IActionResult> Board(Guid boardId)
         {
             BoardViewModel model = new BoardViewModel();
 
             using (var client = Client)
             {
-                var response = await client.GetAsync($"topics/{boardId}");
+                var boardResponse = await client.GetAsync($"boards/{boardId}");
+                if (boardResponse.IsSuccessStatusCode)
+                {
+                    var boardResult = boardResponse.Content.ReadAsStringAsync();
+
+                    var board = JsonConvert.DeserializeObject<ResponseBoardDto>(boardResult.Result);
+
+                    model.CurrentBoard = board;
+
+                    var response = await client.GetAsync($"topics/{boardId}");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var result = response.Content.ReadAsStringAsync();
+
+                        var responseDtos = JsonConvert.DeserializeObject<ICollection<ResponseTopicDto>>(result.Result);
+                        model.Topics = responseDtos;
+
+                        return View(model);
+                    }
+                }
+            }
+
+            return BadRequest();
+        }
+
+        [Route("boards/{boardId}/topics/{topicId}")]
+        public async Task<IActionResult> Topic(Guid boardId, Guid topicId)
+        {
+            BoardViewModel model = new BoardViewModel();
+
+            using (var client = Client)
+            {
+                var response = await client.GetAsync($"messages/{topicId}");
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync();
 
-                    var responseDtos = JsonConvert.DeserializeObject<ICollection<ResponseTopicDto>>(result.Result);
-                    model.Topics = responseDtos;
+                    var responseDtos = JsonConvert.DeserializeObject<ICollection<ResponseMessageDto>>(result.Result);
+                    model.Messages = responseDtos;
 
                     return View(model);
                 }

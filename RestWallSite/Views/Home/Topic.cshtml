@@ -1,0 +1,47 @@
+﻿@using RestWallSite.Models;
+
+@{
+    ViewData["Title"] = "Overview of Boards";
+}
+
+@model BoardViewModel
+
+@*@if (Model.Messages != null)
+{*@
+
+    <div class="category-list">
+        <div class="" style="box-sizing: border-box;padding: 1em;border: solid 1px rgba(221,221,221,0.15);background-color: rgba(221,221,221,0.05);">
+            <b>Oprettet: @Model.CurrentTopic.CreatedOn.ToShortDateString()</b>
+            <h3>@Model.CurrentTopic.Title</h3>
+            <p>@Model.CurrentTopic.Text</p>
+        </div>
+
+    </div>
+
+    @if (Model.Messages.Any())
+    {
+        <div class="category-list">
+            <div class="" style="box-sizing: border-box;padding: 1em;border: solid 1px rgba(221,221,221,0.15);background-color: rgba(221,221,221,0.05);">
+
+                <b>Test</b>
+
+                @foreach (var item in Model.Messages)
+                {
+                    <strong>@item.Title</strong>
+                    <p>@item.Text</p>
+                }
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="category-list">
+            <div class="" style="box-sizing: border-box;padding: 1em;border: solid 1px rgba(221,221,221,0.15);background-color: rgba(221,221,221,0.05);">
+
+                <b>Ingen beskeder</b>
+
+            </div>
+
+        </div>
+    }

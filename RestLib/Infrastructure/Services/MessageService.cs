@@ -21,7 +21,7 @@ namespace RestLib.Infrastructure.Services
             _messageRepository = messageRepository;
         }
 
-        public async Task<ResponseMessageDto> CreateMessageAsync(Guid boardId, Guid topicId, RequestMessageDto message)
+        public async Task<ResponseMessageDto> CreateMessageAsync(Guid topicId, RequestMessageDto message)
         {
             var messageEntity = _mapper.Map<Message>(message);
             messageEntity.Id = Guid.NewGuid();
@@ -33,7 +33,7 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<ResponseMessageDto> GetMessageAsync(Guid boardId, Guid topicId, Guid messageId)
+        public async Task<ResponseMessageDto> GetMessageAsync(Guid topicId, Guid messageId)
         {
             var message = await _messageRepository.GetMessageAsync(messageId);
 
@@ -46,7 +46,7 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<ICollection<ResponseMessageDto>> GetMessagesAsync(Guid boardId, Guid topicId)
+        public async Task<ICollection<ResponseMessageDto>> GetMessagesAsync(Guid topicId)
         {
             var collection = await _messageRepository.GetMessagesAsync(topicId);
 
@@ -54,7 +54,7 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<ResponseMessageDto> UpdateMessageAsync(Guid boardId, Guid topicId, Guid messageId, UpdateMessageDto message)
+        public async Task<ResponseMessageDto> UpdateMessageAsync(Guid topicId, Guid messageId, UpdateMessageDto message)
         {
             var existingTopic = await _messageRepository.GetMessageAsync(messageId);
 
@@ -67,7 +67,7 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<ResponseMessageDto> DeleteMessageAsync(Guid boardId, Guid topicId, ResponseMessageDto message)
+        public async Task<ResponseMessageDto> DeleteMessageAsync(Guid topicId, ResponseMessageDto message)
         {
             var existingTopic = await _messageRepository.GetMessageAsync(message.Id);
 

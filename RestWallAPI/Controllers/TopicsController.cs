@@ -76,7 +76,7 @@ namespace RestWallAPI.Controllers
                 return NotFound();
             }
 
-            var topicDto = await _topicService.UpdateTopicAsync(boardId, topicId, topic);
+            var topicDto = await _topicService.UpdateTopicAsync(topicId, topic);
 
             return Ok(topicDto);
         }
@@ -89,7 +89,7 @@ namespace RestWallAPI.Controllers
                 return NotFound();
             }
 
-            var topicDto = await _topicService.GetTopicAsync(boardId, topicId);
+            var topicDto = await _topicService.GetTopicAsync(topicId);
 
             if (topicDto == null)
             {

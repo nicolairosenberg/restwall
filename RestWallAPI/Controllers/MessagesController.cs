@@ -27,10 +27,10 @@ namespace RestWallAPI.Controllers
             _messageService = messageService;
         }
 
-        [HttpGet(Name = "GetMessages")]
-        public async Task<IActionResult> GetMessagesAsync(Guid boardId, Guid topicId)
+        [HttpGet("{topicId}", Name = "GetMessages")]
+        public async Task<IActionResult> GetMessagesAsync(Guid topicId)
         {
-            var responseDtos = await _messageService.GetMessagesAsync(boardId, topicId);
+            var responseDtos = await _messageService.GetMessagesAsync(topicId);
 
             if (responseDtos == null)
             {
@@ -41,9 +41,9 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpGet("{messageId}", Name = "GetMessageAsync")]
-        public async Task<IActionResult> GetMessageAsync(Guid boardId, Guid topicId, Guid messageId)
+        public async Task<IActionResult> GetMessageAsync(Guid topicId, Guid messageId)
         {
-            var messageDto = await _messageService.GetMessageAsync(boardId, topicId, messageId);
+            var messageDto = await _messageService.GetMessageAsync(topicId, messageId);
 
             if (messageDto == null)
             {
@@ -54,23 +54,23 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> CreateMessageAsync(Guid boardId, Guid topicId, [FromBody] RequestMessageDto message)
+        public async Task<IActionResult> CreateMessageAsync(Guid topicId, [FromBody] RequestMessageDto message)
         {
-            var messageDto = await _messageService.CreateMessageAsync(boardId, topicId, message);
+            var messageDto = await _messageService.CreateMessageAsync(topicId, message);
 
             if (messageDto == null)
             {
                 return NotFound();
             }
 
-            return CreatedAtRoute("GetMessageAsync", new { boardId, topicId, messageId = messageDto.Id }, messageDto);
+            return CreatedAtRoute("GetMessageAsync", new { topicId, messageId = messageDto.Id }, messageDto);
         }
 
         [HttpPut("{messageId}")]
-        public async Task<IActionResult> UpdateMessageAsync(Guid boardId, Guid topicId, Guid messageId, [FromBody] UpdateMessageDto message)
+        public async Task<IActionResult> UpdateMessageAsync(Guid topicId, Guid messageId, [FromBody] UpdateMessageDto message)
         {
 
-            var messageDto = await _messageService.UpdateMessageAsync(boardId, topicId, messageId, message);
+            var messageDto = await _messageService.UpdateMessageAsync(topicId, messageId, message);
 
             if (messageDto == null)
             {
@@ -81,7 +81,7 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpDelete("{messageId}")]
-        public async Task<IActionResult> DeleteMessageAsync(Guid boardId, Guid topicId, Guid messageId)
+        public async Task<IActionResult> DeleteMessageAsync(Guid topicId, Guid messageId)
         {
 
             if (!await _messageService.MessageExistsAsync(topicId))
@@ -89,14 +89,14 @@ namespace RestWallAPI.Controllers
                 return NotFound();
             }
 
-            var messageDto = await _messageService.GetMessageAsync(boardId, topicId, messageId);
+            var messageDto = await _messageService.GetMessageAsync(topicId, messageId);
 
             if (messageDto == null)
             {
                 return NoContent();
             }
 
-            var deletedTopicDto = await _messageService.DeleteMessageAsync(boardId, topicId, messageDto);
+            var deletedTopicDto = await _messageService.DeleteMessageAsync(topicId, messageDto);
 
             return Ok(deletedTopicDto);
         }

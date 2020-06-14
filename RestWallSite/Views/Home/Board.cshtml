@@ -15,7 +15,7 @@
 
                 @foreach (var item in Model.Topics)
                 {
-                    <a href="@Url.Action("board", new { boardId = @item.Id })" id="ember127" class="d-link b-category has-description ember-view">
+                    <a href="@Url.Action("topic", new { topicId = @item.Id })" id="ember127" class="d-link b-category has-description ember-view">
                         <div class="category-icon">
 
                             <img src="~/images/wow-pvp.png" />

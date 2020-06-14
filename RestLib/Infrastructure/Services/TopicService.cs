@@ -41,7 +41,7 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<ResponseTopicDto> GetTopicAsync(Guid boardId, Guid topicId)
+        public async Task<ResponseTopicDto> GetTopicAsync(Guid topicId)
         {
             var topic = await _topicRepository.GetTopicAsync(topicId);
 
@@ -63,7 +63,7 @@ namespace RestLib.Infrastructure.Services
             return responseDtos;
         }
 
-        public async Task<ResponseTopicDto> UpdateTopicAsync(Guid boardId, Guid topicId, UpdateTopicDto topic)
+        public async Task<ResponseTopicDto> UpdateTopicAsync(Guid topicId, UpdateTopicDto topic)
         {
             var existingTopic = await _topicRepository.GetTopicAsync(topicId);
 
@@ -76,7 +76,7 @@ namespace RestLib.Infrastructure.Services
             return responseDto;
         }
 
-        public async Task<ResponseTopicDto> DeleteTopicAsync(Guid boardId, ResponseTopicDto topic)
+        public async Task<ResponseTopicDto> DeleteTopicAsync(ResponseTopicDto topic)
         {
             var existingTopic = await _topicRepository.GetTopicAsync(topic.Id);
 
