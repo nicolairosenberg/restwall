@@ -16,18 +16,16 @@ namespace RestWallAPI.Controllers
 {
 
     [ApiController]
-    [Route("v1/topics")]
+    [Route("v1/boards/{boardId}/topics")]
     public class TopicsController : ControllerBase
     {
         private readonly ITopicService _topicService;
-        private readonly IMapper _mapper;
-        public TopicsController(ITopicService topicService, IMapper mapper)
+        public TopicsController(ITopicService topicService)
         {
             _topicService = topicService;
-            _mapper = mapper;
         }
 
-        [HttpGet("{boardId}")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<ResponseTopicDto>>> GetTopicsAsync(Guid boardId)
         {
             var responseDtos = await _topicService.GetTopicsAsync(boardId);
@@ -40,18 +38,18 @@ namespace RestWallAPI.Controllers
             return Ok(responseDtos);
         }
 
-        //[HttpGet("{topicId}", Name = "GetTopicAsync")]
-        //public async Task<ActionResult<ResponseTopicDto>> GetTopicAsync(Guid boardId, Guid topicId)
-        //{
-        //    var topicDto = await _topicService.GetTopicAsync(boardId, topicId);
+        [HttpGet("{topicId}", Name = "GetTopicAsync")]
+        public async Task<ActionResult<ResponseTopicDto>> GetTopicAsync(Guid topicId)
+        {
+            var topicDto = await _topicService.GetTopicAsync(topicId);
 
-        //    if (topicDto == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (topicDto == null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok(topicDto);
-        //}
+            return Ok(topicDto);
+        }
 
         [HttpPost]
 
@@ -68,9 +66,8 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpPut("{topicId}")]
-        public async Task<ActionResult<ResponseTopicDto>> UpdateTopicAsync(Guid boardId, Guid topicId, [FromBody] UpdateTopicDto topic)
+        public async Task<ActionResult<ResponseTopicDto>> UpdateTopicAsync(Guid topicId, [FromBody] UpdateTopicDto topic)
         {
-
             if (!await _topicService.TopicExistsAsync(topicId))
             {
                 return NotFound();
@@ -82,7 +79,7 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpDelete("{topicId}")]
-        public async Task<ActionResult<ResponseTopicDto>> DeleteTopicAsync(Guid boardId, Guid topicId)
+        public async Task<ActionResult<ResponseTopicDto>> DeleteTopicAsync(Guid topicId)
         {
             if (!await _topicService.TopicExistsAsync(topicId))
             {

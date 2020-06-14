@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="IntegrationTests\" />
+    <Folder Include="UnitTests\Controllers\Site\" />
     <Folder Include="UnitTests\Services\" />
   </ItemGroup>
 

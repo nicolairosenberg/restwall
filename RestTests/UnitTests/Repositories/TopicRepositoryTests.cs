@@ -69,7 +69,7 @@ namespace RestTests.UnitTests
             var topicService = new TopicService(topicRepository, mapper);
 
             // Act
-            var test = await topicService.GetTopicAsync(boardId, topicId);
+            var test = await topicService.GetTopicAsync(topicId);
 
             // Assert
 

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace RestTests.UnitTests.Controllers
+namespace RestTests.UnitTests.Controllers.Api
 {
     public class BoardsControllerTests
     {

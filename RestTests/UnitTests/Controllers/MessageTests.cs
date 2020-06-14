@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RestWallAPI.Controllers;
-using System;
 using System.Threading.Tasks;
 using Xunit;
 

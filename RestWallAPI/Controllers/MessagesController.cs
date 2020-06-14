@@ -15,7 +15,7 @@ using RestLib.Infrastructure.Services.Interfaces;
 namespace RestWallAPI.Controllers
 {
     [ApiController]
-    [Route("v1/messages")]
+    [Route("v1/boards/{boardId}/topics/{topicId}/messages")]
     public class MessagesController : ControllerBase
     {
         private readonly ILogger<MessagesController> _logger;
@@ -27,7 +27,7 @@ namespace RestWallAPI.Controllers
             _messageService = messageService;
         }
 
-        [HttpGet("{topicId}", Name = "GetMessages")]
+        [HttpGet(Name = "GetMessages")]
         public async Task<IActionResult> GetMessagesAsync(Guid topicId)
         {
             var responseDtos = await _messageService.GetMessagesAsync(topicId);
@@ -54,7 +54,7 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> CreateMessageAsync(Guid topicId, [FromBody] RequestMessageDto message)
+        public async Task<IActionResult> CreateMessageAsync(Guid boardId, Guid topicId, [FromBody] RequestMessageDto message)
         {
             var messageDto = await _messageService.CreateMessageAsync(topicId, message);
 
@@ -63,7 +63,7 @@ namespace RestWallAPI.Controllers
                 return NotFound();
             }
 
-            return CreatedAtRoute("GetMessageAsync", new { topicId, messageId = messageDto.Id }, messageDto);
+            return CreatedAtRoute("GetMessageAsync", new { boardId, topicId, messageId = messageDto.Id }, messageDto);
         }
 
         [HttpPut("{messageId}")]
