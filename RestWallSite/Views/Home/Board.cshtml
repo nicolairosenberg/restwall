@@ -6,6 +6,21 @@
 
 @model BoardViewModel
 
+    <div class="category-list">
+        <div class="b-categories-columned" style="width:500px; text-align:center; ">
+            <a href="/" id="ember127" class="d-link b-category has-description ember-view">
+                <div class="category-information">
+                    <h6 class="heading" style="color:darkgoldenrod">Back to Boards</h6>
+                </div>
+            </a>
+            <a href="#" id="ember127" class="d-link b-category has-description ember-view">
+                <div class="category-information">
+                    <h6 class="heading" style="color:darkgoldenrod">New Topic</h6>
+                </div>
+            </a>
+        </div>
+    </div>
+
 @if (Model.Topics != null)
 {
     if (Model.Topics.Any())
@@ -15,9 +30,8 @@
 
                 @foreach (var item in Model.Topics)
                 {
-                    <a href="@Url.Action("topic", new { topicId = @item.Id })" id="ember127" class="d-link b-category has-description ember-view">
+                    <a href="/boards/@Model.CurrentBoard.Id/topics/@item.Id" id="ember127" class="d-link b-category has-description ember-view">
                         <div class="category-icon">
-
                             <img src="~/images/wow-pvp.png" />
                         </div>
 

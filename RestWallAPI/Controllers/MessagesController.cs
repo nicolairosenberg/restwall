@@ -28,7 +28,7 @@ namespace RestWallAPI.Controllers
         }
 
         [HttpGet(Name = "GetMessages")]
-        public async Task<IActionResult> GetMessagesAsync(Guid topicId)
+        public async Task<IActionResult> GetMessagesAsync(Guid boardId, Guid topicId)
         {
             var responseDtos = await _messageService.GetMessagesAsync(topicId);
 

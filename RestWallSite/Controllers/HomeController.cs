@@ -23,6 +23,7 @@ namespace ResWallSite.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             Client.BaseAddress = new Uri("http://api.restwall.dk/v1/");
+            //Client.BaseAddress = new Uri("https://localhost:44366/v1/");
             _logger = logger;
         }
 
@@ -63,7 +64,7 @@ namespace ResWallSite.Controllers
 
                     model.CurrentBoard = board;
 
-                    var response = await client.GetAsync($"topics/{boardId}");
+                    var response = await client.GetAsync($"boards/{boardId}/topics/");
                     if (response.IsSuccessStatusCode)
                     {
                         var result = response.Content.ReadAsStringAsync();
@@ -86,15 +87,35 @@ namespace ResWallSite.Controllers
 
             using (var client = Client)
             {
-                var response = await client.GetAsync($"messages/{topicId}");
-                if (response.IsSuccessStatusCode)
+                var boardResponse = await client.GetAsync($"boards/{boardId}");
+                if (boardResponse.IsSuccessStatusCode)
                 {
-                    var result = response.Content.ReadAsStringAsync();
+                    var boardResult = boardResponse.Content.ReadAsStringAsync();
 
-                    var responseDtos = JsonConvert.DeserializeObject<ICollection<ResponseMessageDto>>(result.Result);
-                    model.Messages = responseDtos;
+                    var board = JsonConvert.DeserializeObject<ResponseBoardDto>(boardResult.Result);
 
-                    return View(model);
+                    model.CurrentBoard = board;
+
+                    var topicResponse = await client.GetAsync($"boards/{boardId}/topics/{topicId}");
+
+                    if (topicResponse.IsSuccessStatusCode)
+                    {
+                        var topicResult = topicResponse.Content.ReadAsStringAsync();
+                        var currentTopic = JsonConvert.DeserializeObject<ResponseTopicDto>(topicResult.Result);
+
+                        model.CurrentTopic = currentTopic;
+
+                        var response = await client.GetAsync($"boards/{boardId}/topics/{topicId}/messages");
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var result = response.Content.ReadAsStringAsync();
+
+                            var responseDtos = JsonConvert.DeserializeObject<ICollection<ResponseMessageDto>>(result.Result);
+                            model.Messages = responseDtos;
+
+                            return View(model);
+                        }
+                    }
                 }
             }
 
