@@ -1,48 +1,377 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="desktop-view not-mobile-device text-size-normal anon no-touch discourse-no-touch">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RestWall</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RestWall</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - ResWallSite - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <title>RestWall Boards</title>
+
+    <style>
+
+        html {
+            background-color: #231a13
+        }
+    </style>
+    <link href="~/css/desktop_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" rel="stylesheet" />
+    <link href="~/css/discourse-blizzard-themes_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" rel="stylesheet" />
+    <link href="~/css/discourse-tooltips_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" rel="stylesheet" />
+    <link href="~/css/desktop_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" rel="stylesheet" />
+    @*<link href="./World of Warcraft Forums_files/desktop_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" media="all" rel="stylesheet" data-target="desktop" data-theme-id="1">
+        <link href="./World of Warcraft Forums_files/discourse-blizzard-themes_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" media="all" rel="stylesheet" data-target="discourse-blizzard-themes" data-theme-id="1">*@
+    @*<link href="./World of Warcraft Forums_files/discourse-tooltips_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css" media="all" rel="stylesheet" data-target="discourse-tooltips" data-theme-id="1">*@
+
+    @*<link href="./World of Warcraft Forums_files/desktop_theme_1_9b301a43f5378b2a4aa989e1806673b471042eae.css" media="all" rel="stylesheet" data-target="desktop_theme" data-theme-id="1">*@
+<link href="~/css/navbar-d4dffdc9e7726ac6.css" rel="stylesheet" />
+    @*<link rel="stylesheet" type="text/css" href="./World of Warcraft Forums_files/navbar-d4dffdc9e7726ac6.css">*@
+    <style>
+        #optanon ul#optanon-menu li {
+            background-color: !important
+        }
+
+            #optanon ul#optanon-menu li.menu-item-selected {
+                background-color: !important
+            }
+
+        #optanon #optanon-popup-wrapper .optanon-white-button-middle {
+            background-color: #0E86CA !important
+        }
+
+        .optanon-alert-box-wrapper .optanon-alert-box-button-middle {
+            background-color: #0E86CA !important;
+            border-color: #0E86CA !important;
+        }
+
+        #optanon #optanon-popup-wrapper .optanon-white-button-middle button {
+            color: #ffffff !important
+        }
+
+        .optanon-alert-box-wrapper .optanon-alert-box-button-middle button {
+            color: #ffffff !important
+        }
+
+        #optanon #optanon-popup-bottom {
+            background-color: #002650 !important
+        }
+
+        #optanon.modern #optanon-popup-top, #optanon.modern #optanon-popup-body-left-shading {
+            background-color: #002650 !important
+        }
+
+        .optanon-alert-box-wrapper {
+            background-color: !important
+        }
+
+            .optanon-alert-box-wrapper .optanon-alert-box-bg p {
+                color: !important
+            }
+
+        button.optanon-alert-box-close.banner-close-button:lang(de)::after {
+            content: '\2717  Ablehnen';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(en)::after {
+            content: '\2717  Decline';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(es)::after {
+            content: '\2717  Rechazar';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(fr)::after {
+            content: '\2717  Refuser';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(it)::after {
+            content: '\2717  Rifiuta';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(ja)::after {
+            content: '\2717  拒否';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(ko)::after {
+            content: '\2717  허용하지 않음';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(pl)::after {
+            content: '\2717  Odrzuć';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(pt)::after {
+            content: '\2717  Recusar';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(ru)::after {
+            content: '\2717  Отказаться';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(th)::after {
+            content: '\2717  ปฏิเสธ';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(zh-CN)::after {
+            content: '\2717  拒绝';
+        }
+
+        button.optanon-alert-box-close.banner-close-button:lang(zh-TW)::after {
+            content: '\2717  不接受';
+        }
+
+        button.optanon-alert-box-close.banner-close-button::after {
+            color: #fff;
+        }
+
+        .optanon-alert-box-wrapper {
+            min-height: 5em;
+        }
+
+        button.optanon-alert-box-close.banner-close-button {
+            background: none;
+            font-weight: bold;
+            font-size: 13px;
+            top: 0;
+            width: auto;
+            height: 44px;
+            z-index: 1000;
+            white-space: nowrap;
+        }
+
+        .optanon-alert-box-wrapper.hide-cookie-setting-button .optanon-alert-box-body {
+            margin-right: 34em;
+            display: grid;
+            min-height: 5em;
+        }
+
+        .optanon-alert-box-wrapper .optanon-alert-box-body {
+            padding-top: 0 !important;
+        }
+
+        .optanon-alert-box-wrapper .optanon-alert-box-bg p {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        .optanon-alert-box-wrapper .optanon-alert-box-bg p,
+        .optanon-alert-box-wrapper .optanon-alert-box-bottom-padding {
+            padding-bottom: 0;
+            padding-top: 0.5em;
+        }
+
+        .optanon-alert-box-wrapper .optanon-alert-box-bottom-top {
+            height: 0;
+        }
+
+        #optanon #optanon-popup-body p.header-3, #optanon #optanon-popup-body #optanon-vendor-consent-text {
+            width: 80%;
+        }
+
+        #optanon #optanon-popup-more-info-bar {
+            margin-right: 10px;
+        }
+
+        .optanon-alert-box-wrapper .optanon-alert-box-button.optanon-button-allow {
+            cursor: auto;
+            margin-right: 13em;
+        }
+
+        .optanon-alert-box-wrapper .optanon-alert-box-button-middle.accept-cookie-container {
+            cursor: pointer;
+        }
+
+        .optanon-alert-box-bg .optanon-alert-box-button-container {
+            margin-top: -22px;
+        }
+
+        .optanon-alert-box-wrapper .optanon-alert-box-corner-close {
+            margin-top: -22px;
+            right: 45px;
+        }
+
+        .optanon-allow-all accept-cookies-button input[type=submit]:hover, input[type=reset]:hover, button:hover, .delete-button:hover, .button:hover {
+            background-color: none !important;
+        }
+
+        #optanon #optanon-popup-body {
+            background: url(https://blzmedia-a.akamaihd.net/gdprcc/background-generic-landscape-short.jpg) no-repeat top center #01254f !important;
+        }
+
+        .optanon-alert-box-wrapper .banner-content .banner-policy-link {
+            color: #00aeff;
+            text-decoration: none !important;
+            transition: color .2s;
+            cursor: pointer;
+            margin-left: 0.5em;
+        }
+
+            .optanon-alert-box-wrapper .banner-content .banner-policy-link:hover {
+                color: #91e4ff !important;
+            }
+
+        .optanon-alert-box-wrapper a {
+            cursor: pointer;
+        }
+
+        #optanon-main-info-text,
+        .legacy-preference-banner-title,
+        #optanon #optanon-menu li .preference-menu-item a,
+        #optanon #optanon-menu button {
+            color: hsla(0,0%,100%,.8) !important;
+        }
+
+        #optanon #optanon-popup-body div.optanon-main-info-text {
+            color: #eee !important;
+        }
+
+        #optanon #optanon-popup-wrapper .optanon-white-button-middle,
+        .optanon-alert-box-wrapper .optanon-alert-box-button-middle {
+            padding: 0;
+            border: none;
+        }
+
+            #optanon #optanon-popup-wrapper .optanon-white-button-middle button,
+            button.optanon-alert-box-close.banner-close-button,
+            .optanon-alert-box-wrapper .optanon-alert-box-button-middle button {
+                height: 42px;
+                padding: 0 24px;
+                background-color: #0e86ca;
+                border: solid 1px #00aeff !important;
+                color: #fff;
+            }
+
+                #optanon #optanon-popup-wrapper .optanon-white-button-middle button:hover,
+                .optanon-alert-box-wrapper .optanon-alert-box-button-middle button:hover,
+                button.optanon-alert-box-close.banner-close-button:hover {
+                    background-color: #00aeff !important;
+                    border: solid 1px #00aeff !important;
+                    color: #fff;
+                }
+
+        #optanon-popup-body, #optanon-popup-bottom {
+            background: #002650 !important;
+        }
+
+        #optanon #optanon-menu li {
+            border-bottom: 1px solid rgba(255,255,255,.15);
+        }
+
+        #optanon #optanon-menu li {
+            background: rgba(14,181,255,.1) !important;
+        }
+
+            #optanon #optanon-menu li:hover,
+            #optanon #optanon-menu .menu-item-selected {
+                background: rgba(14,181,255,.3) !important;
+            }
+
+        #optanon #optanon-branding-top-logo {
+            left: 0px;
+        }
+
+        #optanon-popup-bottom-logo {
+            display: none;
+        }
+
+        #optanon-popup-body-right {
+            color: #fff !important;
+        }
+
+        #optanon #optanon-popup-bottom {
+            border: none !important;
+        }
+
+        #optanon #optanon-popup-body .legacy-preference-banner-title {
+            left: 9em;
+        }
+
+        #optanon.modern #optanon-popup-top, #optanon.modern #optanon-popup-body-left-shading {
+            background-color: #001845 !important;
+            border-bottom: 1px solid rgba(255,255,255,.15);
+        }
+
+        #optanon #optanon-popup-top .optanon-close {
+            background: url('https://blzmedia-a.akamaihd.net/gdprcc/close.png') no-repeat !important;
+            width: 45px;
+            height: 45px;
+            top: 15px;
+            right: 10px;
+        }
+
+        .optanon-alert-box-wrapper .optanon-alert-box-corner-close button {
+            right: 10px !important;
+        }
+
+        @@media only screen and (max-width: 47em) {
+            .optanon-alert-box-wrapper .optanon-alert-box-body {
+                padding-bottom: 10px;
+            }
+
+            .optanon-alert-box-wrapper.hide-cookie-setting-button .optanon-alert-box-body {
+                margin-right: 20px;
+            }
+
+            .optanon-alert-box-bg .optanon-alert-box-button-container {
+                margin-top: 0px;
+            }
+
+            .optanon-alert-box-wrapper .optanon-alert-box-corner-close {
+                top: auto;
+                bottom: 32px;
+            }
+        }
+
+        @@media only screen and (max-width: 35em) {
+            .optanon-alert-box-wrapper .optanon-alert-box-button.optanon-button-allow {
+                margin-right: 0em;
+                margin-bottom: 5em;
+            }
+        }
+    </style>
+</head>
+
+<body class="blizzard blizzard-homepage navigation-categories categories-list docked" data-gr-c-s-loaded="true">
+
+    <section id="main" class="ember-application">
+        <div class="ember-view" id="ember4">
+            <div id="main-outlet" class="wrap" role="main">
+                <div class="list-controls">
+                    <div class="container">
+                        <section id="ember27" class="navigation-container ember-view">
+                            <ol id="ember29" class="category-breadcrumb ember-view">
+                                <li id="ember31" class="select-kit single-select combobox combo-box category-drop none ember-view">
+                                    <div data-name="all categories" data-value="" role="button" data-select-kit-id="ember31-header" aria-expanded="false" aria-haspopup="" aria-owns="[data-select-kit-id=ember31-body]" tabindex="0" id="ember32" class="select-kit-header single-select-header combo-box-header category-drop-header ember-view" style="">
+                                        <div data-name="all categories" title="all categories" id="ember33" class="select-kit-selected-name selected-name choice ember-view">
+                                            <span class="name">
+                                                <a href="/">RestWall</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+                        </section>
+                    </div>
+                </div>
+                <div class="container list-container ">
+                    <div class="row">
+                        <div class="full-width">
+                            <div id="list-area">
+                                <span id="ember48" class="ember-view"><!----></span>
+                                <div id="ember49" class="contents ember-view">
+
+                                    @RenderBody()
+                                    <br /><br />
+
+                                    <div>
+                                        <p>Inspired by: <a href="https://eu.forums.blizzard.com/en/wow/">World of Warcraft Forums</a></p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+    </section>
+
 </body>
 </html>

@@ -6,14 +6,14 @@
 
 @model BoardViewModel
 
-@if (Model.Boards != null)
+@if (Model.Topics != null)
 {
-    if (Model.Boards.Any())
+    if (Model.Topics.Any())
     {
         <div class="category-list">
             <div class="b-categories-columned">
 
-                @foreach (var item in Model.Boards)
+                @foreach (var item in Model.Topics)
                 {
                     <a href="@Url.Action("board", new { boardId = @item.Id })" id="ember127" class="d-link b-category has-description ember-view">
                         <div class="category-icon">
@@ -23,7 +23,7 @@
 
                         <div class="category-information">
                             <h4 class="heading">@item.Title</h4>
-                            <h5 class="category-description">@item.Description</h5>
+                            <h5 class="category-description">@item.Text</h5>
                         </div>
                     </a>
                 }
@@ -32,4 +32,3 @@
         </div>
     }
 }
-

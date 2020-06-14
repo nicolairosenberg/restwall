@@ -27,7 +27,7 @@ namespace RestWallAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("{boardId}")]
         public async Task<ActionResult<IEnumerable<ResponseTopicDto>>> GetTopicsAsync(Guid boardId)
         {
             var responseDtos = await _topicService.GetTopicsAsync(boardId);
@@ -40,18 +40,18 @@ namespace RestWallAPI.Controllers
             return Ok(responseDtos);
         }
 
-        [HttpGet("{topicId}", Name = "GetTopicAsync")]
-        public async Task<ActionResult<ResponseTopicDto>> GetTopicAsync(Guid boardId, Guid topicId)
-        {
-            var topicDto = await _topicService.GetTopicAsync(boardId, topicId);
+        //[HttpGet("{topicId}", Name = "GetTopicAsync")]
+        //public async Task<ActionResult<ResponseTopicDto>> GetTopicAsync(Guid boardId, Guid topicId)
+        //{
+        //    var topicDto = await _topicService.GetTopicAsync(boardId, topicId);
 
-            if (topicDto == null)
-            {
-                return NotFound();
-            }
+        //    if (topicDto == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(topicDto);
-        }
+        //    return Ok(topicDto);
+        //}
 
         [HttpPost]
 

@@ -1,0 +1,3 @@
+.topic-list-item .main-link{position:relative}.d-tooltip{display:none;background-color:#222;position:absolute;z-index:1000;border:1px solid #909090;max-width:300px;margin-top:25px;overflow-wrap:break-word}.d-tooltip-pointer{position:relative;background:#222}.d-tooltip-pointer:before,.d-tooltip-pointer:after{position:absolute;pointer-events:none;border:solid transparent;bottom:100%;content:"";height:0;width:0}.d-tooltip-pointer:after{border-bottom-color:#222;border-width:8px;left:50%;margin-left:-8px}.d-tooltip-pointer:before{border-bottom-color:#909090;border-width:9px;left:50%;margin-left:-9px}.d-tooltip-content{padding:0.5em;font-size:0.8em;color:#909090;line-height:1.4em}
+
+/*# sourceMappingURL=discourse-tooltips_1_a1c34e7c831b687085d4808ea5bd7a767b951a95.css.map */
