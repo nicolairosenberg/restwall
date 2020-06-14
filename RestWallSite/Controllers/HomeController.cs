@@ -15,10 +15,13 @@ namespace ResWallSite.Controllers
 {
     public class HomeController : Controller
     {
+        public HttpClient Client { get; set; } = new HttpClient(); 
+
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
+            Client.BaseAddress = new Uri("http://api.restwall.dk/v1/");
             _logger = logger;
         }
 
@@ -26,9 +29,9 @@ namespace ResWallSite.Controllers
         {
             BoardViewModel model = new BoardViewModel();
 
-            using(var client = new HttpClient())
+            using(var client = Client)
             {
-                var response = await client.GetAsync("https://localhost:44366/api/boards/");
+                var response = await client.GetAsync("boards");
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync();
@@ -48,9 +51,9 @@ namespace ResWallSite.Controllers
         {
             BoardViewModel model = new BoardViewModel();
 
-            using (var client = new HttpClient())
+            using (var client = Client)
             {
-                var response = await client.GetAsync($"https://localhost:44366/api/topics/{boardId}");
+                var response = await client.GetAsync($"topics/{boardId}");
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync();

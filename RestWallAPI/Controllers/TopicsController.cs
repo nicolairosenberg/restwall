@@ -16,7 +16,7 @@ namespace RestWallAPI.Controllers
 {
 
     [ApiController]
-    [Route("api/topics")]
+    [Route("v1/topics")]
     public class TopicsController : ControllerBase
     {
         private readonly ITopicService _topicService;

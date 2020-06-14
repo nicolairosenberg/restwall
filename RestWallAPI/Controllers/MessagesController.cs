@@ -15,7 +15,7 @@ using RestLib.Infrastructure.Services.Interfaces;
 namespace RestWallAPI.Controllers
 {
     [ApiController]
-    [Route("api/messages")]
+    [Route("v1/messages")]
     public class MessagesController : ControllerBase
     {
         private readonly ILogger<MessagesController> _logger;

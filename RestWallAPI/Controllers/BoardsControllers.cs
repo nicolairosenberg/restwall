@@ -13,7 +13,7 @@ using RestLib.Infrastructure.Services.Interfaces;
 namespace RestWallAPI.Controllers
 {
     [ApiController]
-    [Route("api/boards")]
+    [Route("v1/boards")]
     public class BoardsControllers : ControllerBase
     {
         private readonly IBoardService _boardService;

@@ -16,7 +16,7 @@ namespace RestWallAPI.Controllers
 {
 
     [ApiController]
-    [Route("api/users")]
+    [Route("v1/users")]
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;

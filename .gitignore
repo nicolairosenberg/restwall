@@ -14,3 +14,8 @@
 /ResWallSite/obj
 /RestWallSite/bin/Debug/netcoreapp3.1
 /RestWallSite/obj
+/RestLib/bin/Release/netstandard2.0
+/RestWallAPI/bin/Release/netcoreapp3.1
+/RestWallSite/bin/Release/netcoreapp3.1
+/RestWallAPI/Properties/PublishProfiles
+/RestWallSite/Properties/PublishProfiles
