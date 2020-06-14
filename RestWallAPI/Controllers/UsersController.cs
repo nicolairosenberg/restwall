@@ -21,12 +21,15 @@ namespace RestWallAPI.Controllers
     {
         private readonly ILogger<UsersController> _logger;
         private readonly IUserService _userService;
+        private readonly ITopicService _topicService;
+        private readonly IMessageService _messageService;
 
-        public UsersController(ILogger<UsersController> logger, IUserService userService)
+        public UsersController(ILogger<UsersController> logger, IUserService userService, ITopicService topicService, IMessageService messageService)
         {
             _logger = logger;
             _userService = userService;
-            _mapper = mapper;
+            _topicService = topicService;
+            _messageService = messageService;
         }
 
         [HttpGet]
@@ -58,28 +61,11 @@ namespace RestWallAPI.Controllers
         [HttpGet("{userId}", Name = "GetUserAsync")]
         public async Task<IActionResult> GetUserAsync(Guid userId)
         {
-            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
-            {
-                return BadRequest();
-            }
-
             var userDto = await _userService.GetUserAsync(userId);
 
             if (userDto == null)
             {
                 return NotFound();
-            }
-
-            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
-
-            if (includeLinks)
-            {
-                IEnumerable<LinkDto> links = new List<LinkDto>();
-                links = CreateUserLinks(userDto.Id);
-                var userWithLinks = _mapper.Map<ResponseUserLinksDto>(userDto);
-                userWithLinks.Links = links;
-
-                return Ok(userWithLinks);
             }
 
             return Ok(userDto);
@@ -88,7 +74,12 @@ namespace RestWallAPI.Controllers
         [HttpPut("{userId}")]
         public async Task<IActionResult> UpdateUserAsync(Guid userId, [FromBody] UpdateUserDto user)
         {
-            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
+            if(userId == null)
+            {
+                return BadRequest();
+            }
+
+            if(user == null)
             {
                 return BadRequest();
             }
@@ -100,29 +91,13 @@ namespace RestWallAPI.Controllers
                 return NotFound();
             }
 
-            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
-
-            if (includeLinks)
-            {
-                IEnumerable<LinkDto> links = new List<LinkDto>();
-                links = CreateUserLinks(userId);
-                var userWithLinks = _mapper.Map<ResponseUserLinksDto>(userDto);
-                userWithLinks.Links = links;
-
-                return Ok(userWithLinks);
-            }
-
             return Ok(userDto);
         }
 
         [HttpDelete("{userId}")]
         public async Task<IActionResult> DeleteUserAsync(Guid userId)
         {
-            if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
-            {
-                return BadRequest();
-            }
-
+           
             if (!await _userService.UserExistsAsync(userId))
             {
                 return NotFound();
@@ -137,43 +112,23 @@ namespace RestWallAPI.Controllers
 
             var deletedUserDto = await _userService.DeleteUserAsync(userDto);
 
-            var includeLinks = parsedMediaType.SubTypeWithoutSuffix.EndsWith("hateoas", StringComparison.InvariantCultureIgnoreCase);
-
-            if (includeLinks)
-            {
-                IEnumerable<LinkDto> links = new List<LinkDto>();
-                links = CreateUserLinks(deletedUserDto.Id);
-                var userWithLinks = _mapper.Map<ResponseUserLinksDto>(deletedUserDto);
-                userWithLinks.Links = links;
-
-                return Ok(userWithLinks);
-            }
-
             return Ok(deletedUserDto);
         }
 
         [HttpGet("{userId}/topics")]
         public async Task<IActionResult> GetTopicsAsync(Guid userId)
         {
-            throw new NotImplementedException();
-        }
+            var topicDtos = await _topicService.GetUserTopicsAsync(userId);
 
-        [HttpGet("{userId}/topics/{topicId}")]
-        public async Task<IActionResult> GetTopicAsync(Guid userId, Guid topicId)
-        {
-            throw new NotImplementedException();
+            return Ok(topicDtos);
         }
 
         [HttpGet("{userId}/topics/{topicId}/messages")]
         public async Task<IActionResult> GetMessagesAsync(Guid userId, Guid topicId)
         {
-            throw new NotImplementedException();
-        }
+            var messageDtos = await _messageService.GetUserMessagesAsync(userId, topicId);
 
-        [HttpGet("{userId}/topics/{topicId}/messages/{messageId}")]
-        public async Task<IActionResult> GetMessagesAsync(Guid userId, Guid topicId, Guid messageId)
-        {
-            throw new NotImplementedException();
+            return Ok(messageDtos);
         }
     }
 }

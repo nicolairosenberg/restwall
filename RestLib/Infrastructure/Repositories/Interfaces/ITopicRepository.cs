@@ -11,6 +11,7 @@ namespace RestLib.Infrastructure.Repositories.Interfaces
         Task<Topic> CreateTopicAsync(Topic topic);
         Task<Topic> GetTopicAsync(Guid topicId);
         Task<ICollection<Topic>> GetTopicsAsync(Guid boardId);
+        Task<ICollection<Topic>> GetUserTopicsAsync(Guid userId);
         Task<Topic> UpdateTopicAsync(Topic topic);
         Task<Topic> DeleteTopicAsync(Topic topic);
         Task<bool> ExistsAsync(Guid topicId);

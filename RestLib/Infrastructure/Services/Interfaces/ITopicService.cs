@@ -9,6 +9,7 @@ namespace RestLib.Infrastructure.Services.Interfaces
     public interface ITopicService
     {
         Task<ICollection<ResponseTopicDto>> GetTopicsAsync(Guid boardId);
+        Task<ICollection<ResponseTopicDto>> GetUserTopicsAsync(Guid userId);
         Task<ResponseTopicDto> GetTopicAsync(Guid boardId, Guid topicId);
         Task<ResponseTopicDto> CreateTopicAsync(Guid boardId, RequestTopicDto topic);
         Task<ResponseTopicDto> UpdateTopicAsync(Guid boardId, Guid topicId, UpdateTopicDto topic);

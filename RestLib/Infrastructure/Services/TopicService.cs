@@ -91,5 +91,14 @@ namespace RestLib.Infrastructure.Services
         {
             return await _topicRepository.ExistsAsync(topicId);
         }
+
+        public async Task<ICollection<ResponseTopicDto>> GetUserTopicsAsync(Guid userId)
+        {
+            var collection = await _topicRepository.GetUserTopicsAsync(userId);
+
+            var responseDtos = _mapper.Map<ICollection<ResponseTopicDto>>(collection);
+
+            return responseDtos;
+        }
     }
 }

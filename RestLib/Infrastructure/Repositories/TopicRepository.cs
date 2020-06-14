@@ -34,6 +34,11 @@ namespace RestLib.Infrastructure.Repositories
             return await _dataContext.Topics.Where(x => x.BoardId == boardId).ToListAsync();
         }
 
+        public async Task<ICollection<Topic>> GetUserTopicsAsync(Guid userId)
+        {
+            return await _dataContext.Topics.Where(x => x.UserId == userId).ToListAsync();
+        }
+
         public async Task<Topic> UpdateTopicAsync(Topic topic)
         {
             topic.UpdatedOn = DateTime.Now;

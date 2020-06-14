@@ -60,5 +60,10 @@ namespace RestLib.Infrastructure.Repositories
         {
             
         }
+
+        public async Task<ICollection<Message>> GetUserMessagesAsync(Guid userId, Guid topicId)
+        {
+            return await _dataContext.Messages.Where(x => x.TopicId == topicId && x.UserId == userId).ToListAsync();
+        }
     }
 }
