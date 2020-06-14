@@ -83,7 +83,7 @@ namespace RestLib.Infrastructure.Services
             return await _messageRepository.ExistsAsync(messageId);
         }
 
-        public Task<ICollection<ResponseMessageDto>> GetUserMessagesAsync(Guid userId, Guid topicId)
+        public async Task<ICollection<ResponseMessageDto>> GetUserMessagesAsync(Guid userId, Guid topicId)
         {
             var collection = await _messageRepository.GetUserMessagesAsync(userId, topicId);
 
