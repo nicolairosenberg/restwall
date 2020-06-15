@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ namespace ResWallSite.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
-            Client.BaseAddress = new Uri("http://api.restwall.dk/v1/");
+            Client.BaseAddress = new Uri("https://api.restwall.dk/v1/");
             //Client.BaseAddress = new Uri("https://localhost:44366/v1/");
             _logger = logger;
         }
@@ -120,6 +121,73 @@ namespace ResWallSite.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpGet("boards/{boardId}/createtopic")]
+        public async Task<IActionResult> CreateTopic(Guid boardId)
+        {
+            CreateTopicModel model = new CreateTopicModel();
+
+            model.BoardId = boardId;
+
+            return View(model);
+        }
+
+        [HttpPost("boards/{boardId}/createtopic")]
+        public async Task<IActionResult> CreateTopic(Guid boardId, CreateTopicModel model)
+        {
+            model.BoardId = boardId;
+            var jsonString = JsonConvert.SerializeObject(new { title = model.Title, text = model.Text, userId = Guid.NewGuid() });
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            using (var client = Client)
+            {
+                var httpResponse = await client.PostAsync($"boards/{boardId}/topics/", httpContent);
+                if(httpResponse.Content != null)
+                {
+                    var responseContent = await httpResponse.Content.ReadAsStringAsync();
+
+                    ResponseTopicDto responseTopicDto = JsonConvert.DeserializeObject<ResponseTopicDto>(responseContent);
+
+                    model.TopicId = responseTopicDto.Id;
+
+                    return RedirectToAction("Topic", new { boardId, topicId = model.TopicId });
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpGet("boards/{boardId}/topics/{topicId}/createreply")]
+        public async Task<IActionResult> CreateReply(Guid boardId, Guid topicId)
+        {
+            CreateTopicModel model = new CreateTopicModel();
+
+            model.BoardId = boardId;
+            model.TopicId = topicId;
+
+            return View(model);
+        }
+
+        [HttpPost("boards/{boardId}/topics/{topicId}/createreply")]
+        public async Task<IActionResult> CreateReply(Guid boardId, Guid topicId, CreateTopicModel model)
+        {
+            model.BoardId = boardId;
+            var jsonString = JsonConvert.SerializeObject(new { title = model.Title, text = model.Text, userId = Guid.NewGuid() });
+            var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            using (var client = Client)
+            {
+                var httpResponse = await client.PostAsync($"boards/{boardId}/topics/{topicId}/messages", httpContent);
+                if (httpResponse.Content != null)
+                {
+                    var responseContent = await httpResponse.Content.ReadAsStringAsync();
+
+                    ResponseTopicDto responseTopicDto = JsonConvert.DeserializeObject<ResponseTopicDto>(responseContent);
+                    
+                    return RedirectToAction("Topic", new { boardId, topicId });
+                }
+            }
+
+            return View(model);
         }
 
         public IActionResult Privacy()

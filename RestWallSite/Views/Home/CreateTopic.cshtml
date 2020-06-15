@@ -1,0 +1,31 @@
+﻿@using RestWallSite.Models;
+
+@{
+    ViewData["Title"] = "";
+}
+
+@model CreateTopicModel
+
+    <div class="category-list">
+
+        <div class="b-categories-columned" style="text-align:center;">
+            <a href="/boards/@Model.BoardId" id="ember127" class="d-link b-category has-description ember-view">
+                <div class="category-information">
+                    <h6 class="heading" style="color:darkgoldenrod">Back to Boards</h6>
+                </div>
+            </a>
+        </div><br /><br />
+        @using (Html.BeginForm("createtopic", "home", FormMethod.Post))
+        {
+            @Html.HiddenFor(x => x.BoardId)
+    <div class="b-categories-columned" style="">
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @placeholder = "Title", @style = "width:600px", @class = "form-control" } })
+        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @placeholder = "Username", @style = "width:600px", @class = "form-control", disabled = "disabled" } })
+        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @placeholder = "Post time: " + DateTime.Now.ToShortTimeString(), @style = "width:600px", @class = "form-control", disabled = "disabled" } })
+        <div style="clear:both"></div>
+        @Html.TextAreaFor(model => model.Text, 10, 10, new { @style = "width:600px", @class = "form-control" })
+
+    </div><br /><br />
+            <button type="submit" class="btn btn-primary">Create Topic</button>
+        }
+    </div>
